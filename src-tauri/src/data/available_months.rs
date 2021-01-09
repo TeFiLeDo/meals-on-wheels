@@ -8,6 +8,8 @@ use std::{
 #[serde(rename_all = "camelCase")]
 pub struct AvailableMonths {
     data: BTreeMap<i32, HashSet<u32>>,
+    current_year: Option<i32>,
+    current_month: Option<u32>,
 }
 
 impl AvailableMonths {
@@ -56,7 +58,29 @@ impl AvailableMonths {
             }
         }
 
+        // check if current year and month exist as dataset
+        let current_year = if months.contains_key(&now.year()) {
+            Some(now.year())
+        } else {
+            None
+        };
+        let current_month = match current_year {
+            None => None,
+            Some(x) => match months.get(&x) {
+                None => None,
+                Some(x) => {
+                    if x.contains(&now.month()) {
+                        Some(now.month())
+                    } else {
+                        None
+                    }
+                }
+            },
+        };
+
         Self {
+            current_year,
+            current_month,
             data: months,
         }
     }

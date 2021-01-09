@@ -14,7 +14,6 @@ export default class SelectMonth extends React.Component {
     componentDidMount() {
         promisified({ cmd: 'gGetAvailableMonths' })
             .then((d) => {
-                console.log(d);
                 d.loading = false;
                 this.setState(d);
             })
