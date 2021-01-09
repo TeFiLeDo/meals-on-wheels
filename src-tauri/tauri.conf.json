@@ -1,0 +1,58 @@
+{
+  "build": {
+    "distDir": "../build",
+    "devPath": "http://localhost:3000",
+    "beforeDevCommand": "",
+    "beforeBuildCommand": ""
+  },
+  "ctx": {},
+  "tauri": {
+    "embeddedServer": {
+      "active": false
+    },
+    "bundle": {
+      "active": true,
+      "targets": "all",
+      "identifier": "dev.tfld.meals-on-wheels",
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ],
+      "resources": [],
+      "externalBin": [],
+      "copyright": "© 2021 Adrian Wannenmacher",
+      "category": "Medical",
+      "shortDescription": "Meals on Wheels administration tool",
+      "longDescription": "Meals on Wheels administration tool",
+      "deb": {
+        "depends": [],
+        "useBootstrapper": false
+      },
+      "osx": {
+        "frameworks": [],
+        "minimumSystemVersion": "",
+        "useBootstrapper": false
+      },
+      "exceptionDomain": ""
+    },
+    "allowlist": {
+      "all": false
+    },
+    "window": {
+      "title": "Meals on Wheels",
+      "width": 800,
+      "height": 600,
+      "resizable": true,
+      "fullscreen": false
+    },
+    "security": {
+      "csp": "default-src blob: data: filesystem: ws: http: https: 'unsafe-eval' 'unsafe-inline'"
+    },
+    "inliner": {
+      "active": true
+    }
+  }
+}
