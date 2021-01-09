@@ -10,7 +10,7 @@ export default class App extends React.Component {
     state: 'loading',
   }
 
-  selectMonth(year, month) {
+  selectDataset(year, month) {
     alert(`Not yet implemented.\n\nYear:\t${year}\nMonth:\t${month}`);
   }
 
@@ -23,7 +23,7 @@ export default class App extends React.Component {
   render() {
     if (this.state.state === 'select') {
       return (
-        <SelectDataset selectMonth={this.selectMonth.bind(this)}></SelectDataset>
+        <SelectDataset selectDataset={this.selectDataset.bind(this)}></SelectDataset>
       );
     }
 

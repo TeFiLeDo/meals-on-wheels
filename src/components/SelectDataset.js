@@ -116,7 +116,7 @@ export default class SelectDataset extends React.Component {
                                 </Button>
                                 <Button positive icon labelPosition='left'
                                     disabled={this.state.currentYear === null || this.monthDisabled(this.state.currentMonth)}
-                                    onClick={() => this.props.selectMonth(this.state.currentYear, this.state.currentMonth)}
+                                    onClick={() => this.props.selectDataset(this.state.currentYear, this.state.currentMonth)}
                                 >
                                     <Icon name='folder open' />
                                     Load
