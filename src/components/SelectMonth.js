@@ -81,21 +81,9 @@ export default class SelectMonth extends React.Component {
                     </Header>
 
                     <Segment>
-                        <Message icon style={{ textAlign: 'left' }} hidden={!this.state.loading}>
-                            <Icon name='circle notched' loading />
-                            <Message.Content>
-                                <Message.Header>Just a second</Message.Header>
-                            We are just checking what datasets are available.
-                        </Message.Content>
-                        </Message>
-                        <Message
-                            icon='warning sign'
-                            warning
-                            header='No datasets found'
-                            content='Maybe you want to create a new dataset?'
-                            hidden={this.state.loading || Object.keys(this.state.data).length > 0}
-                            style={{ textAlign: 'left' }}
-                        />
+
+                        {this.renderLoadingMessage()}
+                        {this.renderEmptyMessage()}
 
                         <Form style={{ textAlign: 'left' }}>
                             <Form.Field
@@ -137,5 +125,33 @@ export default class SelectMonth extends React.Component {
                 </Grid.Column>
             </Grid>
         );
+    }
+
+    renderLoadingMessage() {
+        if (this.state.loading === true) {
+            return (
+                <Message icon style={{ textAlign: 'left' }}>
+                    <Icon name='circle notched' loading />
+                    <Message.Content>
+                        <Message.Header>Just a second</Message.Header>
+                        We are just checking what datasets are available.
+                  </Message.Content>
+                </Message>
+            );
+        }
+    }
+
+    renderEmptyMessage() {
+        if (this.state.loading === false && Object.keys(this.state.data).length === 0) {
+            return (
+                <Message
+                    icon='warning sign'
+                    warning
+                    header='No datasets found'
+                    content='Maybe you want to create a new dataset?'
+                    style={{ textAlign: 'left' }}
+                />
+            );
+        }
     }
 }

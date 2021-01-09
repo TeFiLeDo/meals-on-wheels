@@ -13,5 +13,9 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"conventionalCommits.scopes": [
+			"ui"
+		]
+	}
 }
