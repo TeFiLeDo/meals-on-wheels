@@ -48,7 +48,7 @@ fn main() {
 
                                 Ok(match *d {
                                     None => "select",
-                                    Some(_) => panic!("data cannot be 'none'"),
+                                    Some(_) => panic!("data must be 'none'"),
                                 })
                             },
                             callback,
