@@ -9,8 +9,9 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.1",
-    "tauri": "^0.14.0",
-    "web-vitals": "^0.2.4"
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^2.0.1",
+    "tauri": "^0.14.0"
   },
   "scripts": {
     "start": "react-scripts start",

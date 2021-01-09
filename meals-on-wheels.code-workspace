@@ -1,10 +1,16 @@
 {
 	"folders": [
 		{
-			"path": "."
+			"name": "FRONTEND",
+			"path": "src"
 		},
 		{
+			"name": "BACKEND",
 			"path": "src-tauri"
+		},
+		{
+			"name": "ALL",
+			"path": "."
 		}
 	],
 	"settings": {}

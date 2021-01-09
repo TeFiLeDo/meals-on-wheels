@@ -1,25 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { promisified } from "tauri/api/tauri";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import 'semantic-ui-css/semantic.min.css';
+
+import SelectMonth from './components/SelectMonth';
+
+export default class App extends React.Component {
+  state = {
+    state: 'loading',
+  }
+
+  selectMonth(year, month) {
+    alert(`Not yet implemented.\n\nYear:\t${year}\nMonth:\t${month}`);
+  }
+
+  componentDidMount() {
+    promisified({ cmd: 'gGetState' })
+      .then((d) => this.setState(d))
+      .catch((e) => console.log(e));
+  }
+
+  render() {
+    if (this.state.state === 'select') {
+      return (
+        <SelectMonth selectMonth={this.selectMonth.bind(this)}></SelectMonth>
+      );
+    }
+
+    return (
+      <React.Fragment></React.Fragment>
+    );
+  }
 }
-
-export default App;
