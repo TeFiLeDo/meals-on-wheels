@@ -77,7 +77,7 @@ export default class SelectMonth extends React.Component {
             >
                 <Grid.Column style={{ maxWidth: 600 }}>
                     <Header as='h1' textAlign='center'>
-                        Choose a month
+                        Select a Month
                     </Header>
 
                     <Segment>
@@ -93,6 +93,7 @@ export default class SelectMonth extends React.Component {
                                 placeholder='Select a year'
                                 value={this.state.currentYear}
                                 onChange={(e, d) => this.setState({ currentYear: d.value })}
+                                disabled={this.state.loading || Object.keys(this.state.data).length === 0}
                             />
                             <Form.Field
                                 label='Month'
@@ -101,23 +102,24 @@ export default class SelectMonth extends React.Component {
                                 placeholder='Select a month'
                                 value={this.state.currentMonth}
                                 onChange={(e, d) => this.setState({ currentMonth: d.value })}
+                                disabled={this.state.loading || this.state.currentYear === null}
                                 error={
                                     this.monthDisabled(this.state.currentMonth) && this.state.currentMonth !== null
-                                        ? 'This month is not available for the selected year.'
+                                        ? 'This month is not available for the selected year'
                                         : null
                                 }
                             />
                             <Button.Group fluid>
                                 <Button icon labelPosition='left' disabled>
-                                    <Icon name='file' />
-                                    New File
+                                    <Icon name='plus' />
+                                    New
                                 </Button>
                                 <Button positive icon labelPosition='left'
                                     disabled={this.state.currentYear === null || this.monthDisabled(this.state.currentMonth)}
                                     onClick={() => this.props.selectMonth(this.state.currentYear, this.state.currentMonth)}
                                 >
-                                    <Icon name='folder' />
-                                    Open File
+                                    <Icon name='folder open' />
+                                    Load
                                 </Button>
                             </Button.Group>
                         </Form>
@@ -130,13 +132,12 @@ export default class SelectMonth extends React.Component {
     renderLoadingMessage() {
         if (this.state.loading === true) {
             return (
-                <Message icon style={{ textAlign: 'left' }}>
-                    <Icon name='circle notched' loading />
-                    <Message.Content>
-                        <Message.Header>Just a second</Message.Header>
-                        We are just checking what datasets are available.
-                  </Message.Content>
-                </Message>
+                <Message
+                    icon='circle notched loading'
+                    header='Searching for available datasets'
+                    content='Just a second, please be patient'
+                    style={{ textAlign: 'left' }}
+                />
             );
         }
     }
@@ -148,7 +149,7 @@ export default class SelectMonth extends React.Component {
                     icon='warning sign'
                     warning
                     header='No datasets found'
-                    content='Maybe you want to create a new dataset?'
+                    content='Maybe you want to create a new one?'
                     style={{ textAlign: 'left' }}
                 />
             );
