@@ -6,7 +6,7 @@ use serde::Deserialize;
 #[serde(tag = "cmd", rename_all = "camelCase")]
 pub enum Cmd {
     /// Get a list of all available months.
-    GGetAvailableMonths {
+    GGetAvailableDatasets {
         callback: String,
         error: String,
     },

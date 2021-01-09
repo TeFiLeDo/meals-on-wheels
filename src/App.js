@@ -3,7 +3,7 @@ import { promisified } from "tauri/api/tauri";
 
 import 'semantic-ui-css/semantic.min.css';
 
-import SelectMonth from './components/SelectMonth';
+import SelectDataset from './components/SelectDataset';
 
 export default class App extends React.Component {
   state = {
@@ -23,7 +23,7 @@ export default class App extends React.Component {
   render() {
     if (this.state.state === 'select') {
       return (
-        <SelectMonth selectMonth={this.selectMonth.bind(this)}></SelectMonth>
+        <SelectDataset selectMonth={this.selectMonth.bind(this)}></SelectDataset>
       );
     }
 

@@ -3,7 +3,7 @@ import React from 'react';
 import { Form, Grid, Header, Select, Message, Icon, Segment, Button } from 'semantic-ui-react';
 import { promisified } from 'tauri/api/tauri';
 
-export default class SelectMonth extends React.Component {
+export default class SelectDataset extends React.Component {
     state = {
         loading: true,
         data: null,
@@ -12,7 +12,7 @@ export default class SelectMonth extends React.Component {
     }
 
     componentDidMount() {
-        promisified({ cmd: 'gGetAvailableMonths' })
+        promisified({ cmd: 'gGetAvailableDatasets' })
             .then((d) => {
                 d.loading = false;
                 this.setState(d);
@@ -77,7 +77,7 @@ export default class SelectMonth extends React.Component {
             >
                 <Grid.Column style={{ maxWidth: 600 }}>
                     <Header as='h1' textAlign='center'>
-                        Select a Month
+                        Select a Dataset
                     </Header>
 
                     <Segment>

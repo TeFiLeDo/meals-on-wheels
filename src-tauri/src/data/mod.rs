@@ -1,3 +1,3 @@
-mod available_months;
+mod available_datasets;
 
-pub use available_months::{AvailableMonths, get_base_dir};
+pub use available_datasets::{AvailableDatasets, get_base_dir};

@@ -28,11 +28,11 @@ fn main() {
                 Err(e) => Err(e.to_string()),
                 Ok(command) => {
                     match command {
-                        GGetAvailableMonths { callback, error } => execute_promise(
+                        GGetAvailableDatasets { callback, error } => execute_promise(
                             webview,
                             || {
                                 let dirs = Arc::clone(&PROJECT_DIRS);
-                                Ok(data::AvailableMonths::from_base_dir(&data::get_base_dir(
+                                Ok(data::AvailableDatasets::from_base_dir(&data::get_base_dir(
                                     &dirs,
                                 )))
                             },

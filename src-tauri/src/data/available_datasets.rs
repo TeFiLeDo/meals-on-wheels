@@ -6,13 +6,13 @@ use std::{
 
 #[derive(Debug, serde::Serialize)]
 #[serde(rename_all = "camelCase")]
-pub struct AvailableMonths {
+pub struct AvailableDatasets {
     data: BTreeMap<i32, HashSet<u32>>,
     current_year: Option<i32>,
     current_month: Option<u32>,
 }
 
-impl AvailableMonths {
+impl AvailableDatasets {
     /// Get all months for which a data file exists within `base_dir`.
     ///
     /// # Params
@@ -22,12 +22,12 @@ impl AvailableMonths {
     /// The first month checked is January 1970, the last month is the month after the current local
     /// month.
     pub fn from_base_dir(base_dir: &Path) -> Self {
-        let mut months = BTreeMap::new();
+        let mut datasets = BTreeMap::new();
         let now = Local::now().date();
 
         // check past years and current year
         for y in 1970..(now.year() + 1) {
-            let mut year = HashSet::new();
+            let mut datasets_year = HashSet::new();
 
             for m in 1..(if y == now.year() {
                 if now.month() == 12 {
@@ -39,34 +39,34 @@ impl AvailableMonths {
                 12
             } + 1)
             {
-                if file_exists(base_dir, y, m) {
-                    year.insert(m);
+                if dataset_exists(base_dir, y, m) {
+                    datasets_year.insert(m);
                 }
             }
 
-            if year.len() > 0 {
-                months.insert(y, year);
+            if datasets_year.len() > 0 {
+                datasets.insert(y, datasets_year);
             }
         }
 
         // check next january if current month is december
         if now.month() == 12 {
-            if file_exists(base_dir, now.year() + 1, 1) {
-                let mut year = HashSet::new();
-                year.insert(1);
-                months.insert(now.year() + 1, year);
+            if dataset_exists(base_dir, now.year() + 1, 1) {
+                let mut dataset = HashSet::new();
+                dataset.insert(1);
+                datasets.insert(now.year() + 1, dataset);
             }
         }
 
         // check if current year and month exist as dataset
-        let current_year = if months.contains_key(&now.year()) {
+        let current_year = if datasets.contains_key(&now.year()) {
             Some(now.year())
         } else {
             None
         };
         let current_month = match current_year {
             None => None,
-            Some(x) => match months.get(&x) {
+            Some(x) => match datasets.get(&x) {
                 None => None,
                 Some(x) => {
                     if x.contains(&now.month()) {
@@ -81,7 +81,7 @@ impl AvailableMonths {
         Self {
             current_year,
             current_month,
-            data: months,
+            data: datasets,
         }
     }
 }
@@ -94,8 +94,8 @@ pub fn get_base_dir(project_dirs: &directories::ProjectDirs) -> PathBuf {
     }
 }
 
-/// Checks wether a data file exists within a directory structure
-pub fn file_exists(base_dir: &Path, year: i32, month: u32) -> bool {
+/// Checks wether a dataset exists within a directory structure
+pub fn dataset_exists(base_dir: &Path, year: i32, month: u32) -> bool {
     std::path::PathBuf::from(format!(
         "{}/{}/{}.ron",
         base_dir
