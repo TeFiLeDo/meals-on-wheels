@@ -6,8 +6,9 @@
 mod cmd;
 mod data;
 
+use data::Data;
 use dotenv::dotenv;
-use std::sync::Arc;
+use std::sync::{Arc, RwLock};
 use tauri::execute_promise;
 
 lazy_static::lazy_static! {
@@ -15,6 +16,7 @@ lazy_static::lazy_static! {
         directories::ProjectDirs::from("dev", "tfld", "Meals on Wheels")
             .expect("unable to find default directories")
     );
+    static ref DATA: Arc<RwLock<Option<Data>>> = Arc::new(RwLock::new(None));
 }
 
 fn main() {
@@ -41,7 +43,14 @@ fn main() {
                         ),
                         GGetState { callback, error } => execute_promise(
                             webview,
-                            || Ok(cmd::global::get_state::State::Select),
+                            || {
+                                let d = DATA.read().expect("failed to get read access to data");
+
+                                Ok(match *d {
+                                    None => "select",
+                                    Some(_) => panic!("data cannot be 'none'"),
+                                })
+                            },
                             callback,
                             error,
                         ),

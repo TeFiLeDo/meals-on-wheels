@@ -1,5 +1,3 @@
-pub mod global;
-
 use serde::Deserialize;
 
 #[derive(Deserialize)]
