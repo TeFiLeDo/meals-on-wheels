@@ -13,7 +13,11 @@ export default class SelectMonth extends React.Component {
 
     componentDidMount() {
         promisified({ cmd: 'gGetAvailableMonths' })
-            .then((d) => this.setState({ data: d, loading: false }))
+            .then((d) => {
+                console.log(d);
+                d.loading = false;
+                this.setState(d);
+            })
             .catch((e) => console.log(e));
     }
 

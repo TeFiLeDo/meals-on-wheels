@@ -4,9 +4,18 @@
 )]
 
 mod cmd;
+mod data;
 
 use dotenv::dotenv;
+use std::sync::Arc;
 use tauri::execute_promise;
+
+lazy_static::lazy_static! {
+    static ref PROJECT_DIRS: Arc<directories::ProjectDirs> =Arc::new(
+        directories::ProjectDirs::from("dev", "tfld", "Meals on Wheels")
+            .expect("unable to find default directories")
+    );
+}
 
 fn main() {
     #[cfg(debug_assertions)]
@@ -22,9 +31,10 @@ fn main() {
                         GGetAvailableMonths { callback, error } => execute_promise(
                             webview,
                             || {
-                                Ok(cmd::global::get_available_months::get_available_months(
-                                    &std::env::var("MOW_BASEDIR").unwrap_or("~".to_string()),
-                                ))
+                                let dirs = Arc::clone(&PROJECT_DIRS);
+                                Ok(data::AvailableMonths::from_base_dir(&data::get_base_dir(
+                                    &dirs,
+                                )))
                             },
                             callback,
                             error,
