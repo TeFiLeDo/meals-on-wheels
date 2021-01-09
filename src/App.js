@@ -16,7 +16,7 @@ export default class App extends React.Component {
 
   componentDidMount() {
     promisified({ cmd: 'gGetState' })
-      .then((d) => this.setState(d))
+      .then((d) => this.setState({ state: d }))
       .catch((e) => console.log(e));
   }
 
