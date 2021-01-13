@@ -15,7 +15,6 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
-      - name: Change into backend source
-        run: cd src-tauri
       - name: Check formatting
         run: cargo fmt -- --check
+        working-directory: src-tauri
