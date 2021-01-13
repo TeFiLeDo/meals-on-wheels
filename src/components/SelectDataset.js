@@ -140,12 +140,13 @@ export default class SelectDataset extends React.Component {
     renderLoadingMessage() {
         if (this.state.loading === true) {
             return (
-                <Message
-                    icon='circle notched loading'
-                    header='Searching for available datasets'
-                    content='Just a second, please be patient'
-                    style={{ textAlign: 'left' }}
-                />
+                <Message icon style={{ textAlign: 'left' }}>
+                    <Icon name='circle notched' loading />
+                    <Message.Content>
+                        <Message.Header>Searching for available datasets</Message.Header>
+                        Just a second, please be patient.
+                    </Message.Content>
+                </Message>
             );
         }
     }
