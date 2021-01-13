@@ -24,7 +24,7 @@ impl Cmd {
                 || sub.execute().map_err(|e| e.into()),
                 success_callback,
                 error_callback,
-            )
+            ),
         };
 
         Ok(())
