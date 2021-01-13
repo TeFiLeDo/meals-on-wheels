@@ -172,7 +172,7 @@ export default class SelectDataset extends React.Component {
                   <Button
                     icon
                     labelPosition="left"
-                    disabled={!this.state.canCreateNow}
+                    disabled={!this.state.canCreateNext}
                     onClick={() => this.props.createDataset(true)}
                   >
                     <Icon name="calendar" />
@@ -182,7 +182,7 @@ export default class SelectDataset extends React.Component {
                     primary
                     icon
                     labelPosition="left"
-                    disabled={!this.state.canCreateNext}
+                    disabled={!this.state.canCreateNow}
                     onClick={() => this.props.createDataset(false)}
                   >
                     <Icon name="plus" />

@@ -2,6 +2,7 @@ import React from "react";
 import { promisified } from "tauri/api/tauri";
 
 import "semantic-ui-css/semantic.min.css";
+import { Button } from "semantic-ui-react";
 
 import SelectDataset from "./components/SelectDataset";
 
@@ -34,7 +35,6 @@ export default class App extends React.Component {
   update() {
     promisified({ cmd: "global", sub: { cmd: "getState" } })
       .then((r) => {
-        console.log(r);
         if (r.variant !== "gotState") {
           throw new Error(
             `expected return variant 'gotState', got ${r.variant}`
@@ -55,7 +55,6 @@ export default class App extends React.Component {
   }
 
   render() {
-    console.log(this.state);
     if (this.state.state === "select") {
       return (
         <SelectDataset
@@ -65,9 +64,27 @@ export default class App extends React.Component {
       );
     } else if (this.state.state === "loaded") {
       return (
-        <p>
-          {this.state.month}. {this.state.year}
-        </p>
+        <React.Fragment>
+          <p>
+            {this.state.month}. {this.state.year}
+          </p>
+          <Button
+            icon="save"
+            onClick={() =>
+              promisified({ cmd: "global", sub: { cmd: "save" } })
+                .then((r) => {
+                  if (r.variant !== "saved") {
+                    throw new Error(
+                      `expected return variant 'saved', got ${r.variant}`
+                    );
+                  } else {
+                    console.log("saved");
+                  }
+                })
+                .catch((e) => console.log(e))
+            }
+          ></Button>
+        </React.Fragment>
       );
     }
 
