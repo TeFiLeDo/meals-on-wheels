@@ -12,10 +12,18 @@ export default class SelectDataset extends React.Component {
     }
 
     componentDidMount() {
-        promisified({ cmd: 'gGetAvailableDatasets' })
+        promisified({ cmd: 'global', sub: { cmd: 'getAvailableDatasets' } })
             .then((d) => {
-                d.loading = false;
-                this.setState(d);
+                if (d.variant !== 'gotDatasets') {
+                    throw new Error(`expected return variant 'gotDatasets', got '${d.variant}'`);
+                } else {
+                    this.setState({
+                        loading: false,
+                        data: d.data,
+                        currentYear: d.currentYear,
+                        currentMonth: d.currentMonth
+                    });
+                }
             })
             .catch((e) => console.log(e));
     }

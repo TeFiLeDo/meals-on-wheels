@@ -15,8 +15,14 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    promisified({ cmd: 'gGetState' })
-      .then((d) => this.setState({ state: d }))
+    promisified({ cmd: 'global', sub: { cmd: 'getState' } })
+      .then((r) => {
+        if (r.variant !== 'gotState') {
+          throw new Error(`expected return variant 'gotState', got ${r.variant}`);
+        } else {
+          this.setState({ state: r.state });
+        }
+      })
       .catch((e) => console.log(e));
   }
 
