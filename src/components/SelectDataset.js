@@ -18,6 +18,8 @@ export default class SelectDataset extends React.Component {
     data: null,
     currentYear: null,
     currentMonth: null,
+    canCreateNow: false,
+    canCreateNext: false,
   };
 
   componentDidMount() {
@@ -33,6 +35,8 @@ export default class SelectDataset extends React.Component {
             data: d.data,
             currentYear: d.currentYear,
             currentMonth: d.currentMonth,
+            canCreateNow: d.canCreateNow,
+            canCreateNext: d.canCreateNext,
           });
         }
       })
@@ -142,15 +146,12 @@ export default class SelectDataset extends React.Component {
                     : null
                 }
               />
-              <Button.Group fluid>
-                <Button icon labelPosition="left" disabled>
-                  <Icon name="plus" />
-                  New
-                </Button>
+              <Form.Field>
                 <Button
                   positive
                   icon
                   labelPosition="left"
+                  fluid
                   disabled={
                     this.state.currentYear === null ||
                     this.monthDisabled(this.state.currentMonth)
@@ -165,7 +166,30 @@ export default class SelectDataset extends React.Component {
                   <Icon name="folder open" />
                   Load
                 </Button>
-              </Button.Group>
+              </Form.Field>
+              <Form.Field>
+                <Button.Group fluid>
+                  <Button
+                    icon
+                    labelPosition="left"
+                    disabled={!this.state.canCreateNow}
+                    onClick={() => this.props.createDataset(true)}
+                  >
+                    <Icon name="calendar" />
+                    New (next month)
+                  </Button>
+                  <Button
+                    primary
+                    icon
+                    labelPosition="left"
+                    disabled={!this.state.canCreateNext}
+                    onClick={() => this.props.createDataset(false)}
+                  >
+                    <Icon name="plus" />
+                    New (this month)
+                  </Button>
+                </Button.Group>
+              </Form.Field>
             </Form>
           </Segment>
         </Grid.Column>

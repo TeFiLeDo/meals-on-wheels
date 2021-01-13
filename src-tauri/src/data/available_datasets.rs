@@ -10,6 +10,8 @@ pub struct AvailableDatasets {
     data: BTreeMap<i32, HashSet<u32>>,
     current_year: Option<i32>,
     current_month: Option<u32>,
+    can_create_now: bool,
+    can_create_next: bool,
 }
 
 impl AvailableDatasets {
@@ -78,10 +80,29 @@ impl AvailableDatasets {
             },
         };
 
+        // check if current and next month can be created
+        let can_create_now = match datasets.get(&now.year()) {
+            None => true,
+            Some(x) => !x.contains(&now.month()),
+        };
+        let can_create_next = if now.month() != 12 {
+            match datasets.get(&now.year()) {
+                None => true,
+                Some(x) => !x.contains(&(now.month() + 1)),
+            }
+        } else {
+            match datasets.get(&(now.year() + 1)) {
+                None => true,
+                Some(x) => !x.contains(&1),
+            }
+        };
+
         Self {
             current_year,
             current_month,
             data: datasets,
+            can_create_now,
+            can_create_next,
         }
     }
 }
