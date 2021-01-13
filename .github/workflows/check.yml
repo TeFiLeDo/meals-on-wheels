@@ -9,4 +9,4 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v2
       - name: Check formatting
-        uses: npx prettier --check src
+        run: npx prettier --check src
