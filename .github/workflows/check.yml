@@ -1,0 +1,12 @@
+name: Check
+
+on: [push, pull_request]
+
+jobs:
+  ui:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Check formatting
+        uses: npx prettier --check src
