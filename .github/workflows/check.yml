@@ -14,7 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v
+      - name: Check syntax
+        run: cargo check
       - name: Check formatting
         run: cargo fmt -- --check
         working-directory: src-tauri
