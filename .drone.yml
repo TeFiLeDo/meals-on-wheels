@@ -1,0 +1,18 @@
+kind: pipeline
+name: Check
+
+steps:
+  - name: Check formatting (frontend)
+    image: node
+    commands:
+      - npx prettier --check src
+  - name: Check formatting (backend)
+    image: rust
+    commands:
+      - cd src-tauri
+      - cargo fmt -- --check
+  - name: Check program validity (backend)
+    image: rust
+    commands:
+      - cd src-tauri
+      - cargo check
