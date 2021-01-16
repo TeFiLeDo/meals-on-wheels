@@ -10,9 +10,10 @@ steps:
     image: rust
     commands:
       - cd src-tauri
+      - rustup component add rustfmt
       - cargo fmt -- --check
-  - name: Check program validity (backend)
-    image: rust
-    commands:
-      - cd src-tauri
-      - cargo check
+  #- name: Check program validity (backend)
+  #  image: rust
+  #  commands:
+  #    - cd src-tauri
+  #    - cargo check
