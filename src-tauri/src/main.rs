@@ -24,7 +24,7 @@ lazy_static::lazy_static! {
     } else {
         PROJECT_DIRS.data_dir().to_path_buf()
     };
-    static ref DATA: RwLock<Option<(Data, Mutex<File>, Mutex<File>)>> = RwLock::new(None);
+    static ref DATA: RwLock<Option<(Data, Mutex<(File,File)>)>> = RwLock::new(None);
 }
 
 fn main() {

@@ -96,7 +96,7 @@ impl super::CmdAble for GlobalCmd {
 
                 let ret = match &*data {
                     None => State::Select,
-                    Some((val, _, _)) => State::Loaded {
+                    Some((val, _)) => State::Loaded {
                         year: val.year,
                         month: val.month,
                     },
@@ -132,26 +132,24 @@ impl super::CmdAble for GlobalCmd {
                     .map(|_| Self::Success::CreatedDataset)
             }
             Self::Save => {
-                if let Some((data, file, tmp)) =
-                    &*DATA.read().expect("failed to get data read lock")
-                {
+                if let Some((data, files)) = &*DATA.read().expect("failed to get data read lock") {
+                    let files = files.lock().expect("failet to get file lock");
+                    let (mut file, mut tmp) = (&files.0, &files.1);
+
                     // write data to tmp
-                    let mut tmp = tmp.lock().expect("failed to get tmp lock");
                     {
-                        let tmp = BufWriter::new(&*tmp);
+                        let tmp = BufWriter::new(tmp);
                         to_writer(tmp, &data).map_err(|e| Self::Error::RonError(e))?;
                     }
 
                     // write data to file
                     {
-                        let mut file = file.lock().expect("failed to get file lock");
-
                         // clear file before writing
                         file.set_len(0).map_err(|e| Self::Error::IoError(e))?;
                         file.seek(SeekFrom::Start(0))
                             .map_err(|e| Self::Error::IoError(e))?;
 
-                        let file = BufWriter::new(&*file);
+                        let file = BufWriter::new(file);
                         to_writer(file, &data).map_err(|e| Self::Error::RonError(e))?;
                     }
 
@@ -203,7 +201,7 @@ fn open_files(year: i32, month: u32, data: Data) -> Result<(), GlobalCmdError> {
         return Err(GlobalCmdError::DatasetIsActive);
     }
 
-    *d = Some((data, Mutex::new(file), Mutex::new(tmp)));
+    *d = Some((data, Mutex::new((file, tmp))));
 
     Ok(())
 }
