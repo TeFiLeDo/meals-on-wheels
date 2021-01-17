@@ -1,5 +1,5 @@
 use std::{
-    fs::{rename, File},
+    fs::{create_dir_all, rename, File},
     io::BufWriter,
     path::PathBuf,
 };
@@ -139,6 +139,14 @@ impl super::CmdAble for GlobalCmd {
                     let path = dataset_file_name(x.year, x.month);
                     let mut temp_path = path.clone();
                     temp_path.set_extension("ron.tmp");
+
+                    if let Some(x) = path.parent() {
+                        if !x.exists() {
+                            create_dir_all(x).map_err(|e| Self::Error::IoError(e))?;
+                        } else if x.is_file() {
+                            panic!("should be directory is a file");
+                        }
+                    };
 
                     let file = File::create(PathBuf::from(&temp_path))
                         .map_err(|e| Self::Error::IoError(e))?;
