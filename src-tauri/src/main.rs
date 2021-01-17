@@ -8,7 +8,12 @@ mod data;
 
 use data::Data;
 use dotenv::dotenv;
-use std::{env, path::PathBuf, sync::RwLock};
+use std::{
+    env,
+    fs::File,
+    path::PathBuf,
+    sync::{Mutex, RwLock},
+};
 
 lazy_static::lazy_static! {
     static ref PROJECT_DIRS: directories::ProjectDirs =
@@ -19,7 +24,7 @@ lazy_static::lazy_static! {
     } else {
         PROJECT_DIRS.data_dir().to_path_buf()
     };
-    static ref DATA: RwLock<Option<Data>> = RwLock::new(None);
+    static ref DATA: RwLock<Option<(Data, Mutex<File>, Mutex<File>)>> = RwLock::new(None);
 }
 
 fn main() {

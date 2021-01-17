@@ -1,15 +1,19 @@
 use std::{
-    fs::{create_dir_all, rename, File},
-    io::BufWriter,
+    collections::hash_map::DefaultHasher,
+    fs::{create_dir_all, OpenOptions},
+    hash::{Hash, Hasher},
+    io::{BufWriter, Seek, SeekFrom},
     path::PathBuf,
+    sync::Mutex,
 };
 
 use crate::{
     data::{AvailableDatasets, Data},
-    DATA, DATADIR,
+    DATA, DATADIR, PROJECT_DIRS,
 };
 use chrono::Datelike;
-use ron::ser::{to_writer_pretty, PrettyConfig};
+use fs2::FileExt;
+use ron::ser::to_writer;
 
 #[derive(Debug, serde::Deserialize)]
 #[serde(tag = "cmd", rename_all = "camelCase")]
@@ -63,6 +67,8 @@ pub enum GlobalCmdError {
     DatasetNotActive,
     #[error("io error")]
     IoError(#[from] std::io::Error),
+    #[error("lock error")]
+    LockError,
     #[error("ron error")]
     RonError(#[from] ron::Error),
 }
@@ -90,7 +96,7 @@ impl super::CmdAble for GlobalCmd {
 
                 let ret = match &*data {
                     None => State::Select,
-                    Some(val) => State::Loaded {
+                    Some((val, _, _)) => State::Loaded {
                         year: val.year,
                         month: val.month,
                     },
@@ -122,41 +128,37 @@ impl super::CmdAble for GlobalCmd {
                     return Err(Self::Error::DatasetExists);
                 }
 
-                let mut data = DATA.write().expect("failed to get data write access");
-
-                if let Some(_) = *data {
-                    return Err(Self::Error::DatasetIsActive);
-                }
-
-                *data = Some(Data::new(year, month));
-
-                Ok(Self::Success::CreatedDataset)
+                open_files(year, month, Data::new(year, month))
+                    .map(|_| Self::Success::CreatedDataset)
             }
             Self::Save => {
-                let data = DATA.read().expect("failed to get data read access");
+                if let Some((data, file, tmp)) =
+                    &*DATA.read().expect("failed to get data read lock")
+                {
+                    // write data to tmp
+                    let mut tmp = tmp.lock().expect("failed to get tmp lock");
+                    {
+                        let tmp = BufWriter::new(&*tmp);
+                        to_writer(tmp, &data).map_err(|e| Self::Error::RonError(e))?;
+                    }
 
-                if let Some(x) = &*data {
-                    let path = dataset_file_name(x.year, x.month);
-                    let mut temp_path = path.clone();
-                    temp_path.set_extension("ron.tmp");
+                    // write data to file
+                    {
+                        let mut file = file.lock().expect("failed to get file lock");
 
-                    if let Some(x) = path.parent() {
-                        if !x.exists() {
-                            create_dir_all(x).map_err(|e| Self::Error::IoError(e))?;
-                        } else if x.is_file() {
-                            panic!("should be directory is a file");
-                        }
-                    };
+                        // clear file before writing
+                        file.set_len(0).map_err(|e| Self::Error::IoError(e))?;
+                        file.seek(SeekFrom::Start(0))
+                            .map_err(|e| Self::Error::IoError(e))?;
 
-                    let file = File::create(PathBuf::from(&temp_path))
+                        let file = BufWriter::new(&*file);
+                        to_writer(file, &data).map_err(|e| Self::Error::RonError(e))?;
+                    }
+
+                    // clear tmp file
+                    tmp.set_len(0).map_err(|e| Self::Error::IoError(e))?;
+                    tmp.seek(SeekFrom::Start(0))
                         .map_err(|e| Self::Error::IoError(e))?;
-
-                    let writer = BufWriter::new(file);
-
-                    to_writer_pretty(writer, x, PrettyConfig::new())
-                        .map_err(|e| Self::Error::RonError(e))?;
-
-                    rename(temp_path, path).map_err(|e| Self::Error::IoError(e))?;
 
                     Ok(Self::Success::Saved)
                 } else {
@@ -167,12 +169,65 @@ impl super::CmdAble for GlobalCmd {
     }
 }
 
+/// Open the permanent and temporary file and set the DATA variable.
+fn open_files(year: i32, month: u32, data: Data) -> Result<(), GlobalCmdError> {
+    let file = dataset_file_name(year, month);
+    if let Some(x) = file.parent() {
+        create_dir_all(x).map_err(|e| GlobalCmdError::IoError(e))?;
+    }
+    let file = OpenOptions::new()
+        .read(true)
+        .write(true)
+        .create(true)
+        .open(file)
+        .map_err(|e| GlobalCmdError::IoError(e))?;
+    file.lock_exclusive()
+        .map_err(|_| GlobalCmdError::LockError)?;
+
+    let tmp = dataset_tmp_name(year, month);
+    if let Some(x) = tmp.parent() {
+        create_dir_all(x).map_err(|e| GlobalCmdError::IoError(e))?;
+    }
+    let tmp = OpenOptions::new()
+        .read(true)
+        .write(true)
+        .create(true)
+        .open(tmp)
+        .map_err(|e| GlobalCmdError::IoError(e))?;
+    tmp.lock_exclusive()
+        .map_err(|_| GlobalCmdError::LockError)?;
+
+    let mut d = DATA.write().expect("failed to get write access to data");
+    if d.is_some() {
+        // should close files since variables are dropped
+        return Err(GlobalCmdError::DatasetIsActive);
+    }
+
+    *d = Some((data, Mutex::new(file), Mutex::new(tmp)));
+
+    Ok(())
+}
+
 /// Get the name of the file for a specific date
 fn dataset_file_name(year: i32, month: u32) -> PathBuf {
     let mut file = DATADIR.clone();
     file.push(year.to_string());
     file.push(month.to_string());
     file.set_extension("ron");
+
+    file
+}
+
+/// Get the name of a tmp file for a specific date
+fn dataset_tmp_name(year: i32, month: u32) -> PathBuf {
+    let mut hasher = DefaultHasher::new();
+    DATADIR.hash(&mut hasher);
+
+    let mut file = PROJECT_DIRS.cache_dir().to_path_buf();
+    file.push(hasher.finish().to_string());
+    file.push(year.to_string());
+    file.push(month.to_string());
+    file.set_extension("ron.tmp");
 
     file
 }
