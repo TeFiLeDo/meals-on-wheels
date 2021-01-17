@@ -1,7 +1,7 @@
 use chrono::{Datelike, Local};
 use std::{
     collections::{BTreeMap, HashSet},
-    path::{Path, PathBuf},
+    path::PathBuf,
 };
 
 #[derive(Debug, serde::Serialize)]
@@ -23,28 +23,25 @@ impl AvailableDatasets {
     /// # Search limits
     /// The first month checked is January 1970, the last month is the month after the current local
     /// month.
-    pub fn from_base_dir(base_dir: &Path) -> Self {
+    pub fn from_base_dir(file_name_format: &dyn Fn(i32, u32) -> PathBuf) -> Self {
         let mut datasets = BTreeMap::new();
         let now = Local::now().date();
 
         // check past years and current year
         for y in 1970..(now.year() + 1) {
-            let mut datasets_year = HashSet::new();
-
-            for m in 1..(if y == now.year() {
-                if now.month() == 12 {
-                    12
+            let datasets_year = Self::find_year_until(
+                y,
+                if y == now.year() {
+                    if now.month() == 12 {
+                        12
+                    } else {
+                        now.month() + 1
+                    }
                 } else {
-                    now.month() + 1
-                }
-            } else {
-                12
-            } + 1)
-            {
-                if dataset_exists(base_dir, y, m) {
-                    datasets_year.insert(m);
-                }
-            }
+                    12
+                },
+                file_name_format,
+            );
 
             if datasets_year.len() > 0 {
                 datasets.insert(y, datasets_year);
@@ -53,10 +50,10 @@ impl AvailableDatasets {
 
         // check next january if current month is december
         if now.month() == 12 {
-            if dataset_exists(base_dir, now.year() + 1, 1) {
-                let mut dataset = HashSet::new();
-                dataset.insert(1);
-                datasets.insert(now.year() + 1, dataset);
+            if file_name_format(now.year() + 1, 1).is_file() {
+                let mut datasets_next_year = HashSet::new();
+                datasets_next_year.insert(1);
+                datasets.insert(now.year() + 1, datasets_next_year);
             }
         }
 
@@ -105,25 +102,26 @@ impl AvailableDatasets {
             can_create_next,
         }
     }
-}
 
-/// Find the appropriate data dir
-pub fn get_base_dir(project_dirs: &directories::ProjectDirs) -> PathBuf {
-    match std::env::var("MOW_DATADIR") {
-        Ok(x) => PathBuf::from(x),
-        Err(_) => project_dirs.data_dir().to_path_buf(),
+    /// Find all datasets within a year
+    fn find_year_until(
+        year: i32,
+        until: u32,
+        file_name_format: &dyn Fn(i32, u32) -> PathBuf,
+    ) -> HashSet<u32> {
+        assert!(
+            until >= 1 && until <= 12,
+            "until parameter isn't valid month ({})",
+            until
+        );
+
+        let mut data = HashSet::new();
+        for month in 1..(until + 1) {
+            if file_name_format(year, month).is_file() {
+                data.insert(month);
+            }
+        }
+
+        data
     }
-}
-
-/// Checks wether a dataset exists within a directory structure
-pub fn dataset_exists(base_dir: &Path, year: i32, month: u32) -> bool {
-    std::path::PathBuf::from(format!(
-        "{}/{}/{}.ron",
-        base_dir
-            .to_str()
-            .expect("invalid unicode character in path"),
-        year,
-        month
-    ))
-    .is_file()
 }

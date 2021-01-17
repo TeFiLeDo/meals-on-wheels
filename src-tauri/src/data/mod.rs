@@ -1,6 +1,6 @@
 mod available_datasets;
 
-pub use available_datasets::{dataset_exists, get_base_dir, AvailableDatasets};
+pub use available_datasets::AvailableDatasets;
 
 /// Struct to hold all application data
 #[derive(Debug, serde::Deserialize, serde::Serialize)]

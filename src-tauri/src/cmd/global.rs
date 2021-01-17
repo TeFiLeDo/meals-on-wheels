@@ -5,8 +5,8 @@ use std::{
 };
 
 use crate::{
-    data::{dataset_exists, get_base_dir, AvailableDatasets, Data},
-    DATA, PROJECT_DIRS,
+    data::{AvailableDatasets, Data},
+    DATA, DATADIR,
 };
 use chrono::Datelike;
 use ron::ser::{to_writer_pretty, PrettyConfig};
@@ -83,7 +83,7 @@ impl super::CmdAble for GlobalCmd {
     fn execute(self: Self) -> Result<Self::Success, Self::Error> {
         match self {
             Self::GetAvailableDatasets => Ok(GlobalCmdSuccess::GotDatasets(
-                AvailableDatasets::from_base_dir(&get_base_dir(&PROJECT_DIRS)),
+                AvailableDatasets::from_base_dir(&dataset_file_name),
             )),
             Self::GetState => {
                 let data = DATA.read().expect("failed to get data read access");
@@ -118,19 +118,17 @@ impl super::CmdAble for GlobalCmd {
                 };
 
                 // check if dataset already exists
-                if dataset_exists(&get_base_dir(&PROJECT_DIRS), year, month) {
+                if dataset_file_name(year, month).is_file() {
                     return Err(Self::Error::DatasetExists);
                 }
 
-                {
-                    let mut data = DATA.write().expect("failed to get data write access");
+                let mut data = DATA.write().expect("failed to get data write access");
 
-                    if let Some(_) = *data {
-                        return Err(Self::Error::DatasetIsActive);
-                    }
-
-                    *data = Some(Data::new(year, month));
+                if let Some(_) = *data {
+                    return Err(Self::Error::DatasetIsActive);
                 }
+
+                *data = Some(Data::new(year, month));
 
                 Ok(Self::Success::CreatedDataset)
             }
@@ -138,15 +136,9 @@ impl super::CmdAble for GlobalCmd {
                 let data = DATA.read().expect("failed to get data read access");
 
                 if let Some(x) = &*data {
-                    let path = format!(
-                        "{}/{}/{}.ron",
-                        get_base_dir(&PROJECT_DIRS)
-                            .to_str()
-                            .expect("invalid unicode character in path"),
-                        x.year,
-                        x.month
-                    );
-                    let temp_path = format!("{}.tmp", path);
+                    let path = dataset_file_name(x.year, x.month);
+                    let mut temp_path = path.clone();
+                    temp_path.set_extension("ron.tmp");
 
                     let file = File::create(PathBuf::from(&temp_path))
                         .map_err(|e| Self::Error::IoError(e))?;
@@ -165,6 +157,16 @@ impl super::CmdAble for GlobalCmd {
             }
         }
     }
+}
+
+/// Get the name of the file for a specific date
+fn dataset_file_name(year: i32, month: u32) -> PathBuf {
+    let mut file = DATADIR.clone();
+    file.push(year.to_string());
+    file.push(month.to_string());
+    file.set_extension("ron");
+
+    file
 }
 
 #[derive(Debug, serde::Serialize)]

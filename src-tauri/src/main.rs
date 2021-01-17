@@ -8,12 +8,17 @@ mod data;
 
 use data::Data;
 use dotenv::dotenv;
-use std::sync::RwLock;
+use std::{env, path::PathBuf, sync::RwLock};
 
 lazy_static::lazy_static! {
     static ref PROJECT_DIRS: directories::ProjectDirs =
         directories::ProjectDirs::from("dev", "tfld", "Meals on Wheels")
         .expect("unable to find default directories");
+    static ref DATADIR: PathBuf = if let Ok(x) = env::var("MOW_DATADIR") {
+        PathBuf::from(x)
+    } else {
+        PROJECT_DIRS.data_dir().to_path_buf()
+    };
     static ref DATA: RwLock<Option<Data>> = RwLock::new(None);
 }
 
