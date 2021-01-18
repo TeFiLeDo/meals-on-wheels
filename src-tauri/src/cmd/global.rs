@@ -1,11 +1,4 @@
-use std::{
-    collections::hash_map::DefaultHasher,
-    fs::{create_dir_all, OpenOptions},
-    hash::{Hash, Hasher},
-    io::{BufWriter, Seek, SeekFrom},
-    path::PathBuf,
-    sync::Mutex,
-};
+use std::{collections::hash_map::DefaultHasher, fs::{create_dir_all, OpenOptions}, hash::{Hash, Hasher}, io::{BufReader, BufWriter, Seek, SeekFrom}, path::PathBuf, sync::Mutex};
 
 use crate::{
     data::{AvailableDatasets, Data},
@@ -13,7 +6,7 @@ use crate::{
 };
 use chrono::Datelike;
 use fs2::FileExt;
-use ron::ser::to_writer;
+use ron::{de::from_reader, ser::to_writer};
 
 #[derive(Debug, serde::Deserialize)]
 #[serde(tag = "cmd", rename_all = "camelCase")]
@@ -34,8 +27,11 @@ pub enum GlobalCmd {
     /// - `CreatedDataset`
     ///
     /// # Error variants
-    /// -`DatasetExists`: if a dataset for the month/year combination already exists in the data dir
+    /// - `DatasetExists`: if a dataset for the month/year combination already exists in the data
+    ///   dir
     /// - `DatasetIsActive`: if there is already an active dataset
+    /// - `IoError`: if the corresponding files can't be opened
+    /// - `LockError`: if the corresponding files can't be locked
     #[serde(rename_all = "camelCase")]
     NewDataset {
         /// Specifies the month the dataset should be created for.
@@ -44,6 +40,23 @@ pub enum GlobalCmd {
         /// - `false`: the dataset is created for the current month
         /// - `true`: the dataset is created for the next month
         next_month: bool,
+    },
+    /// Open an existing dataset
+    ///
+    /// # Success variants
+    /// - `OpenedDataset`
+    ///
+    /// # Error variants
+    /// - `DatasetIsActive`: if there is already an active dataset
+    /// - `IoError`: if the corresponding files can't be opened
+    /// - `LockError`: if the corresponding files can't be locked
+    /// - `NoDataset`: if there is no such dataset
+    #[serde(rename_all = "camelCase")]
+    OpenDataset {
+        /// The year the dataset is in.
+        year: i32,
+        /// The month the dataset if for.
+        month: u32,
     },
     /// Save the loaded dataset to disk
     ///
@@ -69,6 +82,8 @@ pub enum GlobalCmdError {
     IoError(#[from] std::io::Error),
     #[error("lock error")]
     LockError,
+    #[error("the specified dataset doesn't exist")]
+    NoDataset,
     #[error("ron error")]
     RonError(#[from] ron::Error),
 }
@@ -79,6 +94,10 @@ pub enum GlobalCmdSuccess {
     CreatedDataset,
     GotDatasets(AvailableDatasets),
     GotState { state: State },
+    OpenedDataset {
+        /// true, if the year and month within the file don't match up with its file name
+        mismatch: bool,
+    },
     Saved,
 }
 
@@ -130,6 +149,34 @@ impl super::CmdAble for GlobalCmd {
 
                 open_files(year, month, Data::new(year, month))
                     .map(|_| Self::Success::CreatedDataset)
+            }
+            Self::OpenDataset { year, month } => {
+                if month < 1 || month > 12 {
+                    return Err(Self::Error::NoDataset);
+                }
+
+                // open files
+                open_files(year, month, Data::new(year, month))?;
+
+                if let Some((data, files)) = &mut *DATA.write().expect("failet to get data write lock")
+                {
+                    let files = files.lock().expect("failed to get file lock");
+                    let file = &files.0;
+
+                    // TODO: check for data in tmp file
+
+                    // get data from safe file
+                    {
+                        let file = BufReader::new(file);
+                        *data = from_reader(file).map_err(|e| Self::Error::RonError(e))?;
+                    }
+
+                    Ok(Self::Success::OpenedDataset {
+                        mismatch: year != data.year || month != data.month
+                    })
+                } else {
+                    panic!("closed file before read could happen");
+                }
             }
             Self::Save => {
                 if let Some((data, files)) = &*DATA.read().expect("failed to get data read lock") {

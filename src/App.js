@@ -29,7 +29,24 @@ export default class App extends React.Component {
   }
 
   selectDataset(year, month) {
-    alert(`Not yet implemented.\n\nYear:\t${year}\nMonth:\t${month}`);
+    promisified({
+      cmd: "global",
+      sub: { cmd: "openDataset", year: year, month: month },
+    }).then((r) => {
+      if (r.variant !== "openedDataset") {
+        throw new Error(
+          `expected return variant 'openedDataset', got ${r.variant}`
+        );
+      } else {
+        this.update();
+
+        if (r.mismatch) {
+          alert(
+            "The date specified within the dataset differs from its file name!"
+          );
+        }
+      }
+    });
   }
 
   update() {
