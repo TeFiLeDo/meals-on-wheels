@@ -106,6 +106,8 @@ pub enum GlobalCmdSuccess {
     OpenedDataset {
         /// true, if the year and month within the file don't match up with its file name
         mismatch: bool,
+        /// true, if a backup file was loaded
+        is_backup: bool,
     },
     Saved,
 }
@@ -177,23 +179,39 @@ impl super::CmdAble for GlobalCmd {
                     return Err(Self::Error::DatasetIsActive);
                 }
 
-                // open files
+                // establish local data
                 let (file, tmp) = open_files(year, month)?;
+                let mut is_backup = false;
 
                 // get data from file
-                // TODO: check for data in tmp file
-                let new_data: Data;
+                let mut new_data: Result<Data, ron::Error>;
                 {
                     let file = BufReader::new(&file);
-                    new_data = from_reader(file).map_err(|e| Self::Error::RonError(e))?;
+                    new_data = from_reader(file);
                 }
 
-                // check for mismatch
-                let mismatch = new_data.year != year || new_data.month != month;
+                // check temporary file
+                if let Err(e) = new_data {
+                    let tmp = BufReader::new(&tmp);
+                    new_data = from_reader(tmp)
+                        // preserve original error
+                        .map_err(move |_| e);
 
-                *data = Some((new_data, Mutex::new((file, tmp))));
+                    is_backup = true;
+                }
 
-                Ok(Self::Success::OpenedDataset { mismatch })
+                match new_data {
+                    Ok(new_data) => {
+                        // check for mismatch
+                        let mismatch = new_data.year != year || new_data.month != month;
+
+                        // set data
+                        *data = Some((new_data, Mutex::new((file, tmp))));
+
+                        Ok(Self::Success::OpenedDataset { mismatch, is_backup })
+                    }
+                    Err(e) => Err(e.into()),
+                }
             }
             Self::Save => {
                 if let Some((data, files)) = &*DATA.read().expect("failed to get data read lock") {

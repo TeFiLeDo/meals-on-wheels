@@ -44,6 +44,9 @@ class App extends React.Component {
           if (r.mismatch) {
             alert(t("select_dataset.mismatch"));
           }
+          if (r.isBackup) {
+            alert(t("available_tmp_dataset"));
+          }
         }
       })
       .catch((e) => handle_error(e, t));

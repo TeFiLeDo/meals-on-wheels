@@ -27,7 +27,8 @@
       "loading_title": "Searching for available datasets",
       "loading_message": "Just a second, please be patient.",
       "empty_title": "No datasets found",
-      "empty_message": "Maybe you want to create a new one?"
+      "empty_message": "Maybe you want to create a new one?",
+      "available_tmp_dataset": "The dataset file couldn't be read. A backup file was loaded."
     },
     "month": {
       "january": "January",
