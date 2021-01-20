@@ -53,6 +53,18 @@ class App extends React.Component {
       .catch((e) => handle_error(e, t));
   }
 
+  closeDataset() {
+    promisified({ cmd: "global", sub: { cmd: "closeDataset" } })
+      .then((r) => {
+        if (
+          handle_unexpected_variant("closedDataset", r.variant, this.props.t)
+        ) {
+          this.update();
+        }
+      })
+      .catch((e) => handle_error(e, this.props.t));
+  }
+
   update() {
     let t = this.props.t;
 
@@ -84,7 +96,7 @@ class App extends React.Component {
     } else if (this.state.state === "loaded") {
       return (
         <Router>
-          <SiteHeader />
+          <SiteHeader closeDataset={this.closeDataset.bind(this)} />
           <Switch>
             <Route path="/" exact>
               Default route

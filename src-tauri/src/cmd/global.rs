@@ -18,6 +18,14 @@ use ron::{de::from_reader, ser::to_writer};
 #[derive(Debug, serde::Deserialize)]
 #[serde(tag = "cmd", rename_all = "camelCase")]
 pub enum GlobalCmd {
+    /// Close the current dataset.
+    ///
+    /// # SuccessVariants
+    /// - `ClosedDataset`
+    ///
+    /// # Error Variants
+    /// - `DatasetNotActive`
+    CloseDataset,
     /// Get a list of all available datasets.
     ///
     /// # Success variants
@@ -98,6 +106,7 @@ pub enum GlobalCmdError {
 #[derive(Debug, serde::Serialize)]
 #[serde(tag = "variant", rename_all = "camelCase")]
 pub enum GlobalCmdSuccess {
+    ClosedDataset,
     CreatedDataset,
     GotDatasets(AvailableDatasets),
     GotState {
@@ -118,6 +127,24 @@ impl super::CmdAble for GlobalCmd {
 
     fn execute(self: Self) -> Result<Self::Success, Self::Error> {
         match self {
+            Self::CloseDataset => {
+                let mut data = DATA.write().expect("failed to get data write access");
+                if data.is_none() {
+                    return Err(Self::Error::DatasetNotActive);
+                }
+
+                if let Some((_, files)) = &mut *data {
+                    let mut files = files.lock().expect("failed to get files access");
+                    let (file, tmp) = &mut *files;
+
+                    file.unlock().map_err(|_| Self::Error::LockError)?;
+                    tmp.unlock().map_err(|_| Self::Error::LockError)?;
+                }
+
+                *data = None;
+
+                Ok(Self::Success::ClosedDataset)
+            }
             Self::GetAvailableDatasets => Ok(GlobalCmdSuccess::GotDatasets(
                 AvailableDatasets::from_base_dir(&dataset_file_name),
             )),

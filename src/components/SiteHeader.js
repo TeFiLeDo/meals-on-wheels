@@ -5,7 +5,7 @@ import { Menu } from "semantic-ui-react";
 import { promisified } from "tauri/api/tauri";
 import { handle_error, handle_unexpected_variant } from "../error";
 
-export default function SiteHeader() {
+export default function SiteHeader(props) {
   const { t } = useTranslation();
 
   return (
@@ -28,6 +28,7 @@ export default function SiteHeader() {
                 .catch((e) => handle_error(e, t))
             }
           />
+          <Menu.Item icon="log out" onClick={props.closeDataset} />
         </Menu.Menu>
       </Menu>
     </React.Fragment>
