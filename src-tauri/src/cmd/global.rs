@@ -1,6 +1,6 @@
 use std::{
     collections::hash_map::DefaultHasher,
-    fs::{create_dir_all, OpenOptions},
+    fs::{create_dir_all, File, OpenOptions},
     hash::{Hash, Hasher},
     io::{BufReader, BufWriter, Seek, SeekFrom},
     path::PathBuf,
@@ -156,37 +156,44 @@ impl super::CmdAble for GlobalCmd {
                     return Err(Self::Error::DatasetExists);
                 }
 
-                open_files(year, month, Data::new(year, month))
-                    .map(|_| Self::Success::CreatedDataset)
+                // open data var
+                let mut data = DATA.write().expect("failed to get data write lock");
+                if data.is_some() {
+                    return Err(Self::Error::DatasetIsActive);
+                }
+
+                // set data var
+                *data = Some((Data::new(year, month), Mutex::new(open_files(year, month)?)));
+
+                Ok(Self::Success::CreatedDataset)
             }
             Self::OpenDataset { year, month } => {
                 if month < 1 || month > 12 {
                     return Err(Self::Error::NoDataset);
                 }
 
-                // open files
-                open_files(year, month, Data::new(year, month))?;
-
-                if let Some((data, files)) =
-                    &mut *DATA.write().expect("failet to get data write lock")
-                {
-                    let files = files.lock().expect("failed to get file lock");
-                    let file = &files.0;
-
-                    // TODO: check for data in tmp file
-
-                    // get data from safe file
-                    {
-                        let file = BufReader::new(file);
-                        *data = from_reader(file).map_err(|e| Self::Error::RonError(e))?;
-                    }
-
-                    Ok(Self::Success::OpenedDataset {
-                        mismatch: year != data.year || month != data.month,
-                    })
-                } else {
-                    panic!("closed file before read could happen");
+                let mut data = DATA.write().expect("failed to get data write lock");
+                if data.is_some() {
+                    return Err(Self::Error::DatasetIsActive);
                 }
+
+                // open files
+                let (file, tmp) = open_files(year, month)?;
+
+                // get data from file
+                // TODO: check for data in tmp file
+                let new_data: Data;
+                {
+                    let file = BufReader::new(&file);
+                    new_data = from_reader(file).map_err(|e| Self::Error::RonError(e))?;
+                }
+
+                // check for mismatch
+                let mismatch = new_data.year != year || new_data.month != month;
+
+                *data = Some((new_data, Mutex::new((file, tmp))));
+
+                Ok(Self::Success::OpenedDataset { mismatch })
             }
             Self::Save => {
                 if let Some((data, files)) = &*DATA.read().expect("failed to get data read lock") {
@@ -225,7 +232,7 @@ impl super::CmdAble for GlobalCmd {
 }
 
 /// Open the permanent and temporary file and set the DATA variable.
-fn open_files(year: i32, month: u32, data: Data) -> Result<(), GlobalCmdError> {
+fn open_files(year: i32, month: u32) -> Result<(File, File), GlobalCmdError> {
     let file = dataset_file_name(year, month);
     if let Some(x) = file.parent() {
         create_dir_all(x).map_err(|e| GlobalCmdError::IoError(e))?;
@@ -252,15 +259,7 @@ fn open_files(year: i32, month: u32, data: Data) -> Result<(), GlobalCmdError> {
     tmp.lock_exclusive()
         .map_err(|_| GlobalCmdError::LockError)?;
 
-    let mut d = DATA.write().expect("failed to get write access to data");
-    if d.is_some() {
-        // should close files since variables are dropped
-        return Err(GlobalCmdError::DatasetIsActive);
-    }
-
-    *d = Some((data, Mutex::new((file, tmp))));
-
-    Ok(())
+    Ok((file, tmp))
 }
 
 /// Get the name of the file for a specific date
