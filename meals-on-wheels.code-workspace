@@ -16,7 +16,8 @@
 	"settings": {
 		"conventionalCommits.scopes": [
 			"ui",
-			"backend"
+			"backend",
+			"i18n"
 		]
 	}
 }

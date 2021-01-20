@@ -1,0 +1,47 @@
+{
+  "translation": {
+    "error": {
+      "undefined": "Ein Fehler ist aufgetreten.",
+      "unexpected_variant": "Ein internes Kommunikationsproblem ist aufgetreten.",
+      "global": {
+        "dataset_exists": "Der Datensatz existiert bereits.",
+        "dataset_is_active": "Es ist bereits ein Datensatz aktiv.",
+        "dataset_not_active": "Es ist kein Datensatz aktiv.",
+        "io": "Ein Speicherfehler ist aufgetreten.",
+        "lock": "Datensatzdateien konnten nicht gesperrt werden.",
+        "no_dataset": "Der Datensatz existiert nicht.",
+        "ron": "Ein Dateiformatfehler ist aufgetreten."
+      }
+    },
+    "select_dataset": {
+      "title": "Datensatz auswählen",
+      "year_label": "Jahr",
+      "year_placeholder": "Jahr auswählen",
+      "month_label": "Monat",
+      "month_placeholder": "Monat auswählen",
+      "month_not_available": "Dieser Monat ist für das gewählte Jahr nicht verfügbar",
+      "new_now": "Neu (dieser Monat)",
+      "new_next": "Neu (nächster Monat)",
+      "load": "Laden",
+      "mismatch": "Das im Datensatz genannte Datum passt nicht zum Dateinamen!",
+      "loading_title": "Suche nach verfügbaren Datensätzen",
+      "loading_message": "Bitte warte einen Augenblick.",
+      "empty_title": "Keine Datensätzen gefunden",
+      "empty_message": "Willst du vielleicht einen neuen erstellen?"
+    },
+    "month": {
+      "january": "Januar",
+      "february": "Februar",
+      "march": "März",
+      "april": "April",
+      "may": "Mai",
+      "june": "Juni",
+      "july": "Juli",
+      "august": "August",
+      "september": "September",
+      "october": "Oktober",
+      "november": "November",
+      "december": "Dezember"
+    }
+  }
+}

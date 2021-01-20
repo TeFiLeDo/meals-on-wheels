@@ -1,0 +1,47 @@
+{
+  "translation": {
+    "error": {
+      "undefined": "An error occurred.",
+      "unexpected_variant": "The backend sent an invalid response.",
+      "global": {
+        "dataset_exists": "This dataset already exists.",
+        "dataset_is_active": "There already is an active dataset.",
+        "dataset_not_active": "There is no active dataset.",
+        "io": "An IO error occurred.",
+        "lock": "Filed to lock the dataset files.",
+        "no_dataset": "This dataset doesn't exist.",
+        "ron": "A file format error occurred."
+      }
+    },
+    "select_dataset": {
+      "title": "Select a dataset",
+      "year_label": "Year",
+      "year_placeholder": "Select a year",
+      "month_label": "Month",
+      "month_placeholder": "Select a month",
+      "month_not_available": "This month is not available for the selected year",
+      "new_now": "New (this month)",
+      "new_next": "New (next month)",
+      "load": "Load",
+      "mismatch": "The date specified within the dataset differs from its file name!",
+      "loading_title": "Searching for available datasets",
+      "loading_message": "Just a second, please be patient.",
+      "empty_title": "No datasets found",
+      "empty_message": "Maybe you want to create a new one?"
+    },
+    "month": {
+      "january": "January",
+      "february": "February",
+      "march": "March",
+      "april": "April",
+      "may": "May",
+      "june": "June",
+      "july": "July",
+      "august": "August",
+      "september": "September",
+      "october": "October",
+      "november": "November",
+      "december": "December"
+    }
+  }
+}

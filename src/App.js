@@ -5,8 +5,10 @@ import "semantic-ui-css/semantic.min.css";
 import { Button } from "semantic-ui-react";
 
 import SelectDataset from "./components/SelectDataset";
+import { withTranslation } from "react-i18next";
+import { handle_error, handle_unexpected_variant } from "./error";
 
-export default class App extends React.Component {
+class App extends React.Component {
   state = {
     state: "loading",
     year: null,
@@ -17,46 +19,42 @@ export default class App extends React.Component {
     promisified({
       cmd: "global",
       sub: { cmd: "newDataset", nextMonth: nextMonth },
-    }).then((r) => {
-      if (r.variant !== "createdDataset") {
-        throw new Error(
-          `expected return variant 'createdDataset', got ${r.variant}`
-        );
-      } else {
-        this.update();
-      }
-    });
+    })
+      .then((r) => {
+        if (
+          handle_unexpected_variant("createdDataset", r.variant, this.props.t)
+        ) {
+          this.update();
+        }
+      })
+      .catch((e) => handle_error(e, this.props.t));
   }
 
   selectDataset(year, month) {
+    let t = this.props.t;
+
     promisified({
       cmd: "global",
       sub: { cmd: "openDataset", year: year, month: month },
-    }).then((r) => {
-      if (r.variant !== "openedDataset") {
-        throw new Error(
-          `expected return variant 'openedDataset', got ${r.variant}`
-        );
-      } else {
-        this.update();
+    })
+      .then((r) => {
+        if (handle_unexpected_variant("openedDataset", r.variant, t)) {
+          this.update();
 
-        if (r.mismatch) {
-          alert(
-            "The date specified within the dataset differs from its file name!"
-          );
+          if (r.mismatch) {
+            alert(t("select_dataset.mismatch"));
+          }
         }
-      }
-    });
+      })
+      .catch((e) => handle_error(e, t));
   }
 
   update() {
+    let t = this.props.t;
+
     promisified({ cmd: "global", sub: { cmd: "getState" } })
       .then((r) => {
-        if (r.variant !== "gotState") {
-          throw new Error(
-            `expected return variant 'gotState', got ${r.variant}`
-          );
-        } else {
+        if (handle_unexpected_variant("gotState", r.variant, t)) {
           this.setState({
             state: r.state.state,
             year: r.state.year,
@@ -64,7 +62,7 @@ export default class App extends React.Component {
           });
         }
       })
-      .catch((e) => console.log(e));
+      .catch((e) => handle_error(e, t));
   }
 
   componentDidMount() {
@@ -90,15 +88,13 @@ export default class App extends React.Component {
             onClick={() =>
               promisified({ cmd: "global", sub: { cmd: "save" } })
                 .then((r) => {
-                  if (r.variant !== "saved") {
-                    throw new Error(
-                      `expected return variant 'saved', got ${r.variant}`
-                    );
-                  } else {
+                  if (
+                    handle_unexpected_variant("saved", r.variant, this.props.t)
+                  ) {
                     console.log("saved");
                   }
                 })
-                .catch((e) => console.log(e))
+                .catch((e) => handle_error(e, this.props.t))
             }
           ></Button>
         </React.Fragment>
@@ -108,3 +104,5 @@ export default class App extends React.Component {
     return <React.Fragment></React.Fragment>;
   }
 }
+
+export default withTranslation()(App);

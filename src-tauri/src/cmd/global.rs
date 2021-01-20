@@ -79,19 +79,19 @@ pub enum GlobalCmd {
 
 #[derive(Debug, thiserror::Error)]
 pub enum GlobalCmdError {
-    #[error("a dataset for this year and month already exists")]
+    #[error("error.global.dataset_exists")]
     DatasetExists,
-    #[error("there already is an opened dataset")]
+    #[error("error.global.dataset_is_active")]
     DatasetIsActive,
-    #[error("there isn't an active dataset")]
+    #[error("error.global.dataset_not_active")]
     DatasetNotActive,
-    #[error("io error")]
+    #[error("error.global.io: {0}")]
     IoError(#[from] std::io::Error),
-    #[error("lock error")]
+    #[error("error.global.lock")]
     LockError,
-    #[error("the specified dataset doesn't exist")]
+    #[error("error.global.no_dataset")]
     NoDataset,
-    #[error("ron error")]
+    #[error("error.global.ron: {0}")]
     RonError(#[from] ron::Error),
 }
 

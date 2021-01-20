@@ -11,8 +11,10 @@ import {
   Button,
 } from "semantic-ui-react";
 import { promisified } from "tauri/api/tauri";
+import { withTranslation } from "react-i18next";
+import { handle_error, handle_unexpected_variant } from "../error";
 
-export default class SelectDataset extends React.Component {
+class SelectDataset extends React.Component {
   state = {
     loading: true,
     data: null,
@@ -25,11 +27,7 @@ export default class SelectDataset extends React.Component {
   componentDidMount() {
     promisified({ cmd: "global", sub: { cmd: "getAvailableDatasets" } })
       .then((d) => {
-        if (d.variant !== "gotDatasets") {
-          throw new Error(
-            `expected return variant 'gotDatasets', got '${d.variant}'`
-          );
-        } else {
+        if (handle_unexpected_variant("gotDatasets", d.variant, this.props.t)) {
           this.setState({
             loading: false,
             data: d.data,
@@ -40,7 +38,7 @@ export default class SelectDataset extends React.Component {
           });
         }
       })
-      .catch((e) => console.log(e));
+      .catch((e) => handle_error(e, this.props.t));
   }
 
   years() {
@@ -76,33 +74,87 @@ export default class SelectDataset extends React.Component {
   }
 
   months() {
+    let t = this.props.t;
+
     return [
-      { key: 1, value: 1, disabled: this.monthDisabled(1), text: "January" },
-      { key: 2, value: 2, disabled: this.monthDisabled(2), text: "February" },
-      { key: 3, value: 3, disabled: this.monthDisabled(3), text: "March" },
-      { key: 4, value: 4, disabled: this.monthDisabled(4), text: "April" },
-      { key: 5, value: 5, disabled: this.monthDisabled(5), text: "May" },
-      { key: 6, value: 6, disabled: this.monthDisabled(6), text: "June" },
-      { key: 7, value: 7, disabled: this.monthDisabled(7), text: "July" },
-      { key: 8, value: 8, disabled: this.monthDisabled(8), text: "August" },
-      { key: 9, value: 9, disabled: this.monthDisabled(9), text: "September" },
-      { key: 10, value: 10, disabled: this.monthDisabled(10), text: "October" },
+      {
+        key: 1,
+        value: 1,
+        disabled: this.monthDisabled(1),
+        text: t("month.january"),
+      },
+      {
+        key: 2,
+        value: 2,
+        disabled: this.monthDisabled(2),
+        text: t("month.february"),
+      },
+      {
+        key: 3,
+        value: 3,
+        disabled: this.monthDisabled(3),
+        text: t("month.march"),
+      },
+      {
+        key: 4,
+        value: 4,
+        disabled: this.monthDisabled(4),
+        text: t("month.april"),
+      },
+      {
+        key: 5,
+        value: 5,
+        disabled: this.monthDisabled(5),
+        text: t("month.may"),
+      },
+      {
+        key: 6,
+        value: 6,
+        disabled: this.monthDisabled(6),
+        text: t("month.june"),
+      },
+      {
+        key: 7,
+        value: 7,
+        disabled: this.monthDisabled(7),
+        text: t("month.july"),
+      },
+      {
+        key: 8,
+        value: 8,
+        disabled: this.monthDisabled(8),
+        text: t("month.august"),
+      },
+      {
+        key: 9,
+        value: 9,
+        disabled: this.monthDisabled(9),
+        text: t("month.september"),
+      },
+      {
+        key: 10,
+        value: 10,
+        disabled: this.monthDisabled(10),
+        text: t("month.october"),
+      },
       {
         key: 11,
         value: 11,
         disabled: this.monthDisabled(11),
-        text: "November",
+        text: t("month.november"),
       },
       {
         key: 12,
         value: 12,
         disabled: this.monthDisabled(12),
-        text: "December",
+        text: t("month.december"),
       },
     ];
   }
 
   render() {
+    let t = this.props.t;
+
     return (
       <Grid
         textAlign="center"
@@ -111,19 +163,18 @@ export default class SelectDataset extends React.Component {
       >
         <Grid.Column style={{ maxWidth: 600 }}>
           <Header as="h1" textAlign="center">
-            Select a Dataset
+            {t("select_dataset.title")}
           </Header>
-
           <Segment>
             {this.renderLoadingMessage()}
             {this.renderEmptyMessage()}
 
             <Form style={{ textAlign: "left" }}>
               <Form.Field
-                label="Year"
+                label={t("select_dataset.year_label")}
                 control={Select}
                 options={this.years()}
-                placeholder="Select a year"
+                placeholder={t("select_dataset.year_placeholder")}
                 value={this.state.currentYear}
                 onChange={(e, d) => this.setState({ currentYear: d.value })}
                 disabled={
@@ -132,17 +183,17 @@ export default class SelectDataset extends React.Component {
                 }
               />
               <Form.Field
-                label="Month"
+                label={t("select_dataset.month_label")}
                 control={Select}
                 options={this.months()}
-                placeholder="Select a month"
+                placeholder={t("select_dataset.month_placeholder")}
                 value={this.state.currentMonth}
                 onChange={(e, d) => this.setState({ currentMonth: d.value })}
                 disabled={this.state.loading || this.state.currentYear === null}
                 error={
                   this.monthDisabled(this.state.currentMonth) &&
                   this.state.currentMonth !== null
-                    ? "This month is not available for the selected year"
+                    ? t("select_dataset.month_not_available")
                     : null
                 }
               />
@@ -164,7 +215,7 @@ export default class SelectDataset extends React.Component {
                   }
                 >
                   <Icon name="folder open" />
-                  Load
+                  {t("select_dataset.load")}
                 </Button>
               </Form.Field>
               <Form.Field>
@@ -176,7 +227,7 @@ export default class SelectDataset extends React.Component {
                     onClick={() => this.props.createDataset(true)}
                   >
                     <Icon name="calendar" />
-                    New (next month)
+                    {t("select_dataset.new_next")}
                   </Button>
                   <Button
                     primary
@@ -186,7 +237,7 @@ export default class SelectDataset extends React.Component {
                     onClick={() => this.props.createDataset(false)}
                   >
                     <Icon name="plus" />
-                    New (this month)
+                    {t("select_dataset.new_now")}
                   </Button>
                 </Button.Group>
               </Form.Field>
@@ -199,12 +250,14 @@ export default class SelectDataset extends React.Component {
 
   renderLoadingMessage() {
     if (this.state.loading === true) {
+      let t = this.props.t;
+
       return (
         <Message icon style={{ textAlign: "left" }}>
           <Icon name="circle notched" loading />
           <Message.Content>
-            <Message.Header>Searching for available datasets</Message.Header>
-            Just a second, please be patient.
+            <Message.Header>{t("select_dataset.loading_title")}</Message.Header>
+            {t("select_dataset.loading_message")}
           </Message.Content>
         </Message>
       );
@@ -216,15 +269,19 @@ export default class SelectDataset extends React.Component {
       this.state.loading === false &&
       Object.keys(this.state.data).length === 0
     ) {
+      let t = this.props.t;
+
       return (
         <Message
           icon="warning sign"
           warning
-          header="No datasets found"
-          content="Maybe you want to create a new one?"
+          header={t("select_dataset.empty_title")}
+          content={t("select_dataset.empty_message")}
           style={{ textAlign: "left" }}
         />
       );
     }
   }
 }
+
+export default withTranslation()(SelectDataset);
