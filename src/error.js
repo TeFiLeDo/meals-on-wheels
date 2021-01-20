@@ -12,7 +12,9 @@ export function handle_error(error, t) {
 }
 
 export function handle_unexpected_variant(expected, received, t) {
-  if (expected === received) {
+  if (!Array.isArray(expected) && expected === received) {
+    return true;
+  } else if (Array.isArray(expected) && expected.includes(received)) {
     return true;
   } else {
     handle_error(
