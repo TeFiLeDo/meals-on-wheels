@@ -208,7 +208,10 @@ impl super::CmdAble for GlobalCmd {
                         // set data
                         *data = Some((new_data, Mutex::new((file, tmp))));
 
-                        Ok(Self::Success::OpenedDataset { mismatch, is_backup })
+                        Ok(Self::Success::OpenedDataset {
+                            mismatch,
+                            is_backup,
+                        })
                     }
                     Err(e) => Err(e.into()),
                 }
