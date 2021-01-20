@@ -213,7 +213,11 @@ impl super::CmdAble for GlobalCmd {
                             is_backup,
                         })
                     }
-                    Err(e) => Err(e.into()),
+                    Err(e) => {
+                        file.unlock().ok();
+                        tmp.unlock().ok();
+                        Err(e.into())
+                    }
                 }
             }
             Self::Save => {
