@@ -13,6 +13,10 @@
         "ron": "Ein Dateiformatfehler ist aufgetreten."
       }
     },
+    "app": {
+      "title": "Essen auf Rädern",
+      "short": "EaR"
+    },
     "select_dataset": {
       "title": "Datensatz auswählen",
       "year_label": "Jahr",

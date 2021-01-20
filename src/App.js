@@ -2,11 +2,12 @@ import React from "react";
 import { promisified } from "tauri/api/tauri";
 
 import "semantic-ui-css/semantic.min.css";
-import { Button } from "semantic-ui-react";
 
 import SelectDataset from "./components/SelectDataset";
 import { withTranslation } from "react-i18next";
 import { handle_error, handle_unexpected_variant } from "./error";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import SiteHeader from "./components/SiteHeader";
 
 class App extends React.Component {
   state = {
@@ -82,29 +83,18 @@ class App extends React.Component {
       );
     } else if (this.state.state === "loaded") {
       return (
-        <React.Fragment>
-          <p>
-            {this.state.month}. {this.state.year}
-          </p>
-          <Button
-            icon="save"
-            onClick={() =>
-              promisified({ cmd: "global", sub: { cmd: "save" } })
-                .then((r) => {
-                  if (
-                    handle_unexpected_variant("saved", r.variant, this.props.t)
-                  ) {
-                    console.log("saved");
-                  }
-                })
-                .catch((e) => handle_error(e, this.props.t))
-            }
-          ></Button>
-        </React.Fragment>
+        <Router>
+          <SiteHeader />
+          <Switch>
+            <Route path="/" exact>
+              Default route
+            </Route>
+          </Switch>
+        </Router>
       );
+    } else {
+      return <p>Invalid state</p>;
     }
-
-    return <React.Fragment></React.Fragment>;
   }
 }
 

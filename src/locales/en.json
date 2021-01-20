@@ -13,6 +13,10 @@
         "ron": "A file format error occurred."
       }
     },
+    "app": {
+      "title": "Meals on Wheels",
+      "short": "MoW"
+    },
     "select_dataset": {
       "title": "Select a dataset",
       "year_label": "Year",
