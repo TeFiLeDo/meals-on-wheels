@@ -1,4 +1,11 @@
-use std::{collections::hash_map::DefaultHasher, fs::{create_dir_all, OpenOptions}, hash::{Hash, Hasher}, io::{BufReader, BufWriter, Seek, SeekFrom}, path::PathBuf, sync::Mutex};
+use std::{
+    collections::hash_map::DefaultHasher,
+    fs::{create_dir_all, OpenOptions},
+    hash::{Hash, Hasher},
+    io::{BufReader, BufWriter, Seek, SeekFrom},
+    path::PathBuf,
+    sync::Mutex,
+};
 
 use crate::{
     data::{AvailableDatasets, Data},
@@ -93,7 +100,9 @@ pub enum GlobalCmdError {
 pub enum GlobalCmdSuccess {
     CreatedDataset,
     GotDatasets(AvailableDatasets),
-    GotState { state: State },
+    GotState {
+        state: State,
+    },
     OpenedDataset {
         /// true, if the year and month within the file don't match up with its file name
         mismatch: bool,
@@ -158,7 +167,8 @@ impl super::CmdAble for GlobalCmd {
                 // open files
                 open_files(year, month, Data::new(year, month))?;
 
-                if let Some((data, files)) = &mut *DATA.write().expect("failet to get data write lock")
+                if let Some((data, files)) =
+                    &mut *DATA.write().expect("failet to get data write lock")
                 {
                     let files = files.lock().expect("failed to get file lock");
                     let file = &files.0;
@@ -172,7 +182,7 @@ impl super::CmdAble for GlobalCmd {
                     }
 
                     Ok(Self::Success::OpenedDataset {
-                        mismatch: year != data.year || month != data.month
+                        mismatch: year != data.year || month != data.month,
                     })
                 } else {
                     panic!("closed file before read could happen");
