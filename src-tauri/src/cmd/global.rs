@@ -133,14 +133,6 @@ impl super::CmdAble for GlobalCmd {
                     return Err(Self::Error::DatasetNotActive);
                 }
 
-                if let Some((_, files)) = &mut *data {
-                    let mut files = files.lock().expect("failed to get files access");
-                    let (file, tmp) = &mut *files;
-
-                    file.unlock().map_err(|_| Self::Error::LockError)?;
-                    tmp.unlock().map_err(|_| Self::Error::LockError)?;
-                }
-
                 *data = None;
 
                 Ok(Self::Success::ClosedDataset)
@@ -240,11 +232,7 @@ impl super::CmdAble for GlobalCmd {
                             is_backup,
                         })
                     }
-                    Err(e) => {
-                        file.unlock().ok();
-                        tmp.unlock().ok();
-                        Err(e.into())
-                    }
+                    Err(e) => Err(e.into()),
                 }
             }
             Self::Save => {
