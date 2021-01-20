@@ -8,7 +8,7 @@ export function handle_error(error, t) {
     error_string = components[0];
   }
 
-  alert(`${t(error_string)}\n\n${error}`);
+  alert(`${t([error_string, "error.undefined"])}\n\n${error}`);
 }
 
 export function handle_unexpected_variant(expected, received, t) {
