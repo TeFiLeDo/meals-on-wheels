@@ -112,6 +112,7 @@ pub enum GlobalCmdSuccess {
     GotState {
         state: State,
     },
+    #[serde(rename_all = "camelCase")]
     OpenedDataset {
         /// true, if the year and month within the file don't match up with its file name
         mismatch: bool,
@@ -240,6 +241,11 @@ impl super::CmdAble for GlobalCmd {
                     let files = files.lock().expect("failet to get file lock");
                     let (mut file, mut tmp) = (&files.0, &files.1);
 
+                    // clear tmp file
+                    tmp.set_len(0).map_err(|e| Self::Error::IoError(e))?;
+                    tmp.seek(SeekFrom::Start(0))
+                        .map_err(|e| Self::Error::IoError(e))?;
+
                     // write data to tmp
                     {
                         let tmp = BufWriter::new(tmp);
@@ -256,11 +262,6 @@ impl super::CmdAble for GlobalCmd {
                         let file = BufWriter::new(file);
                         to_writer(file, &data).map_err(|e| Self::Error::RonError(e))?;
                     }
-
-                    // clear tmp file
-                    tmp.set_len(0).map_err(|e| Self::Error::IoError(e))?;
-                    tmp.seek(SeekFrom::Start(0))
-                        .map_err(|e| Self::Error::IoError(e))?;
 
                     Ok(Self::Success::Saved)
                 } else {
@@ -321,7 +322,7 @@ fn dataset_tmp_name(year: i32, month: u32) -> PathBuf {
     file.push(hasher.finish().to_string());
     file.push(year.to_string());
     file.push(month.to_string());
-    file.set_extension("ron.tmp");
+    file.set_extension("ron");
 
     file
 }
