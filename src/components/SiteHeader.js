@@ -38,8 +38,8 @@ export default function SiteHeader(props) {
             <Dropdown
               compact
               options={[
-                { key: "en", value: "en", text: "🇬🇧" },
                 { key: "de", value: "de", text: "🇦🇹" },
+                { key: "en", value: "en", text: "🇬🇧" },
               ]}
               value={i18n.language.substring(0, 2)}
               onChange={(_, { value }) => i18n.changeLanguage(value)}
