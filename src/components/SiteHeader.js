@@ -50,6 +50,8 @@ export default function SiteHeader(props) {
           <Confirm
             header={t("select_dataset.close_confirm_header")}
             content={t("select_dataset.close_confirm_body")}
+            confirmButton={t("button.ok")}
+            cancelButton={t("button.cancel")}
             open={showConfirm}
             onConfirm={() => {
               setShowConfirm(false);

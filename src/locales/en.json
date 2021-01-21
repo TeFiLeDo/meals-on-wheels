@@ -18,6 +18,10 @@
       "short": "MoW",
       "choose_language": "Choose language"
     },
+    "button": {
+      "ok": "OK",
+      "cancel": "Cancel"
+    },
     "select_dataset": {
       "title": "Select a dataset",
       "year_label": "Year",

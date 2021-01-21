@@ -18,6 +18,10 @@
       "short": "EaR",
       "choose_language": "Sprache auswählen"
     },
+    "button": {
+      "ok": "OK",
+      "cancel": "Abbrechen"
+    },
     "select_dataset": {
       "title": "Datensatz auswählen",
       "year_label": "Jahr",
@@ -35,7 +39,7 @@
       "empty_message": "Willst du vielleicht einen neuen erstellen?",
       "available_tmp_dataset": "Die Datensatzdatei konnte nicht gelesen werden. Eine Wiederherstellungsdatei wurde geladen.",
       "close_confirm_header": "Datensatz wirklich schließen?",
-      "close_confirm_body": "Alle nicht gespeicherten Daten gehen unwiederherstellbar verloren.",
+      "close_confirm_body": "Alle nicht gespeicherten Daten gehen verloren und können nicht wiederhergestellt werden.",
       "save": "Datensatz speichern",
       "close": "Datensatz schließen"
     },
