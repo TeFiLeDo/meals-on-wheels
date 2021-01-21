@@ -1,6 +1,15 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Form, Header, Icon, Segment, Select, Button } from "semantic-ui-react";
+import {
+  Form,
+  Header,
+  Icon,
+  Segment,
+  Select,
+  Button,
+  Message,
+  Input,
+} from "semantic-ui-react";
 import { promisified } from "tauri/api/tauri";
 import { handle_error } from "../error";
 
@@ -43,16 +52,24 @@ export default function Components() {
               .catch((e) => handle_error(e, t));
           }}
         >
-          <Form.Input
-            label={t("views.components.add.name_label")}
-            placeholder={t("views.components.add.name_placeholder")}
-            value={newComponent.name}
-            onChange={(_, e) => {
-              setNewComponent((nc) => {
-                return { ...nc, name: e.value };
-              });
-            }}
-          />
+          <Form.Field>
+            <label>{t("views.components.add.name_label")}</label>
+            <Input
+              placeholder={t("views.components.add.name_placeholder")}
+              value={newComponent.name}
+              onChange={(_, e) => {
+                setNewComponent((nc) => {
+                  return { ...nc, name: e.value };
+                });
+              }}
+            />
+            <Message
+              icon="info circle"
+              info
+              header={t("views.components.add.name_warning_title")}
+              content={t("views.components.add.name_warning_content")}
+            />
+          </Form.Field>
 
           <Form.Group widths="equal">
             <Form.Field
