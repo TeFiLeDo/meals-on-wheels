@@ -32,7 +32,9 @@
       "loading_message": "Bitte warte einen Augenblick.",
       "empty_title": "Keine Datensätzen gefunden",
       "empty_message": "Willst du vielleicht einen neuen erstellen?",
-      "available_tmp_dataset": "Die Datensatzdatei konnte nicht gelesen werden. Eine Wiederherstellungsdatei wurde geladen."
+      "available_tmp_dataset": "Die Datensatzdatei konnte nicht gelesen werden. Eine Wiederherstellungsdatei wurde geladen.",
+      "close_confirm_header": "Datensatz wirklich schließen?",
+      "close_confirm_body": "Alle nicht gespeicherten Daten gehen unwiederherstellbar verloren."
     },
     "month": {
       "january": "Januar",

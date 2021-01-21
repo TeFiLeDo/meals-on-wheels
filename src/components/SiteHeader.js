@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { Menu } from "semantic-ui-react";
+import { Menu, Confirm } from "semantic-ui-react";
 import { promisified } from "tauri/api/tauri";
 import { handle_error, handle_unexpected_variant } from "../error";
 
 export default function SiteHeader(props) {
   const { t } = useTranslation();
+  const [showConfirm, setShowConfirm] = useState(false);
 
   return (
     <React.Fragment>
@@ -28,7 +29,17 @@ export default function SiteHeader(props) {
                 .catch((e) => handle_error(e, t))
             }
           />
-          <Menu.Item icon="log out" onClick={props.closeDataset} />
+          <Menu.Item icon="log out" onClick={() => setShowConfirm(true)} />
+          <Confirm
+            header={t("select_dataset.close_confirm_header")}
+            content={t("select_dataset.close_confirm_body")}
+            open={showConfirm}
+            onConfirm={() => {
+              setShowConfirm(false);
+              props.closeDataset();
+            }}
+            onCancel={() => setShowConfirm(false)}
+          />
         </Menu.Menu>
       </Menu>
     </React.Fragment>
