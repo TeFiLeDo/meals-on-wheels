@@ -1,14 +1,25 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { Menu, Confirm, Dropdown } from "semantic-ui-react";
+import { Menu, Confirm, Dropdown, Icon } from "semantic-ui-react";
 import { promisified } from "tauri/api/tauri";
 import { handle_error, handle_unexpected_variant } from "../error";
 
 export default function SiteHeader(props) {
   const { t, i18n } = useTranslation();
   const [showConfirm, setShowConfirm] = useState(false);
-  console.log(i18n.language);
+  const [saving, setSaving] = useState(null);
+
+  let save_icon,
+    save_loading = false;
+  if (saving === "saved") {
+    save_icon = "check";
+  } else if (saving === "saving") {
+    save_icon = "spinner";
+    save_loading = true;
+  } else {
+    save_icon = "save";
+  }
 
   return (
     <React.Fragment>
@@ -30,18 +41,24 @@ export default function SiteHeader(props) {
             />
           </Menu.Item>
           <Menu.Item
-            icon="save"
+            icon
             title={t("header.save")}
-            onClick={() =>
+            onClick={() => {
+              setSaving("saving");
               promisified({ cmd: "global", sub: { cmd: "save" } })
                 .then((r) => {
-                  if (handle_unexpected_variant("saved", r.variant, t)) {
-                    console.log("saved");
-                  }
+                  handle_unexpected_variant("saved", r.variant, t);
+                  setSaving("saved");
+                  setTimeout(() => setSaving(null), 2500);
                 })
-                .catch((e) => handle_error(e, t))
-            }
-          />
+                .catch((e) => {
+                  setSaving(null);
+                  handle_error(e, t);
+                });
+            }}
+          >
+            <Icon name={save_icon} loading={save_loading} />
+          </Menu.Item>
           <Menu.Item
             icon="log out"
             title={t("header.close")}
