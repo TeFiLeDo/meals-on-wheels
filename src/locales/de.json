@@ -22,6 +22,9 @@
       }
     },
     "header": {
+      "nav": {
+        "components": "Komponenten"
+      },
       "choose_language": "Sprache auswählen",
       "close_confirm_header": "Datensatz wirklich schließen?",
       "close_confirm_body": "Alle nicht gespeicherten Daten gehen verloren und können nicht wiederhergestellt werden.",
@@ -29,6 +32,22 @@
       "close": "Datensatz schließen"
     },
     "views": {
+      "components": {
+        "add": {
+          "title": "Komponenten hinzufügen",
+          "name_label": "Name",
+          "name_placeholder": "Der Name der neuen Komponente",
+          "variants_label": "Varianten",
+          "variants_placeholder": "Neue Variante hinzufüge",
+          "variants_none": "Keine weiteren Varianten gefunden.",
+          "variants_new": "Neue Variante: ",
+          "options_label": "Optionen",
+          "options_placeholder": "Neue Option hinzufügen",
+          "options_none": "Keine weiteren Optionen gefunden.",
+          "options_new": "Neue Option: ",
+          "add": "Hinzufügen"
+        }
+      },
       "select_dataset": {
         "title": "Datensatz auswählen",
         "year_label": "Jahr",

@@ -9,6 +9,7 @@ import { withTranslation } from "react-i18next";
 import { handle_error, handle_unexpected_variant } from "./error";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import SiteHeader from "./components/SiteHeader";
+import Components from "./views/Components";
 
 class App extends React.Component {
   state = {
@@ -103,6 +104,9 @@ class App extends React.Component {
             <Switch>
               <Route path="/" exact>
                 Default route
+              </Route>
+              <Route path="/components">
+                <Components />
               </Route>
             </Switch>
           </Container>

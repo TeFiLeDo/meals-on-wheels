@@ -24,9 +24,14 @@ export default function SiteHeader(props) {
   return (
     <React.Fragment>
       <Menu fixed="top" inverted color="blue">
-        <Menu.Item header as={Link} title={t("app.title")}>
+        <Menu.Item header as={Link} to="/" title={t("app.title")}>
           {t(["app.short", "app.title"])}
         </Menu.Item>
+        <Menu.Item
+          as={Link}
+          to="/components"
+          content={t("header.nav.components")}
+        />
 
         <Menu.Menu position="right">
           <Menu.Item title={t("header.choose_language")}>

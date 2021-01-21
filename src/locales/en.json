@@ -22,6 +22,9 @@
       }
     },
     "header": {
+      "nav": {
+        "components": "Components"
+      },
       "choose_language": "Choose language",
       "close_confirm_header": "Really close the dataset?",
       "close_confirm_body": "All unsaved data is irreversibly lost.",
@@ -29,6 +32,22 @@
       "close": "Close Dataset"
     },
     "views": {
+      "components": {
+        "add": {
+          "title": "Add Components",
+          "name_label": "Name",
+          "name_placeholder": "The new components name",
+          "variants_label": "Variants",
+          "variants_placeholder": "Add a new variant",
+          "variants_none": "No other variants found.",
+          "variants_new": "New variant: ",
+          "options_label": "Options",
+          "options_placeholder": "Add a new option",
+          "options_none": "No other options found.",
+          "options_new": "New option: ",
+          "add": "Add"
+        }
+      },
       "select_dataset": {
         "title": "Select a dataset",
         "year_label": "Year",
