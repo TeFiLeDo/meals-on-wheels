@@ -3,7 +3,7 @@ import { promisified } from "tauri/api/tauri";
 
 import "semantic-ui-css/semantic.min.css";
 
-import SelectDataset from "./components/SelectDataset";
+import SelectDataset from "./views/SelectDataset";
 import { withTranslation } from "react-i18next";
 import { handle_error, handle_unexpected_variant } from "./error";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -43,10 +43,10 @@ class App extends React.Component {
           this.update();
 
           if (r.mismatch) {
-            alert(t("select_dataset.mismatch"));
+            alert(t("views.select_dataset.mismatch"));
           }
           if (r.isBackup) {
-            alert(t("available_tmp_dataset"));
+            alert(t("views.select_dataset.loaded_backup"));
           }
         }
       })

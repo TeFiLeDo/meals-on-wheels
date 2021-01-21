@@ -163,7 +163,7 @@ class SelectDataset extends React.Component {
       >
         <Grid.Column style={{ maxWidth: 600 }}>
           <Header as="h1" textAlign="center">
-            {t("select_dataset.title")}
+            {t("views.select_dataset.title")}
           </Header>
           <Segment>
             {this.renderLoadingMessage()}
@@ -171,10 +171,10 @@ class SelectDataset extends React.Component {
 
             <Form style={{ textAlign: "left" }}>
               <Form.Field
-                label={t("select_dataset.year_label")}
+                label={t("views.select_dataset.year_label")}
                 control={Select}
                 options={this.years()}
-                placeholder={t("select_dataset.year_placeholder")}
+                placeholder={t("views.select_dataset.year_placeholder")}
                 value={this.state.currentYear}
                 onChange={(e, d) => this.setState({ currentYear: d.value })}
                 disabled={
@@ -183,17 +183,17 @@ class SelectDataset extends React.Component {
                 }
               />
               <Form.Field
-                label={t("select_dataset.month_label")}
+                label={t("views.select_dataset.month_label")}
                 control={Select}
                 options={this.months()}
-                placeholder={t("select_dataset.month_placeholder")}
+                placeholder={t("views.select_dataset.month_placeholder")}
                 value={this.state.currentMonth}
                 onChange={(e, d) => this.setState({ currentMonth: d.value })}
                 disabled={this.state.loading || this.state.currentYear === null}
                 error={
                   this.monthDisabled(this.state.currentMonth) &&
                   this.state.currentMonth !== null
-                    ? t("select_dataset.month_not_available")
+                    ? t("views.select_dataset.month_not_available")
                     : null
                 }
               />
@@ -215,7 +215,7 @@ class SelectDataset extends React.Component {
                   }
                 >
                   <Icon name="folder open" />
-                  {t("select_dataset.load")}
+                  {t("views.select_dataset.load")}
                 </Button>
               </Form.Field>
               <Form.Field>
@@ -227,7 +227,7 @@ class SelectDataset extends React.Component {
                     onClick={() => this.props.createDataset(true)}
                   >
                     <Icon name="calendar" />
-                    {t("select_dataset.new_next")}
+                    {t("views.select_dataset.new_next")}
                   </Button>
                   <Button
                     primary
@@ -237,7 +237,7 @@ class SelectDataset extends React.Component {
                     onClick={() => this.props.createDataset(false)}
                   >
                     <Icon name="plus" />
-                    {t("select_dataset.new_now")}
+                    {t("views.select_dataset.new_now")}
                   </Button>
                 </Button.Group>
               </Form.Field>
@@ -256,8 +256,8 @@ class SelectDataset extends React.Component {
         <Message icon style={{ textAlign: "left" }}>
           <Icon name="circle notched" loading />
           <Message.Content>
-            <Message.Header>{t("select_dataset.loading_title")}</Message.Header>
-            {t("select_dataset.loading_message")}
+            <Message.Header>{t("views.select_dataset.loading_title")}</Message.Header>
+            {t("views.select_dataset.loading_message")}
           </Message.Content>
         </Message>
       );
@@ -275,8 +275,8 @@ class SelectDataset extends React.Component {
         <Message
           icon="warning sign"
           warning
-          header={t("select_dataset.empty_title")}
-          content={t("select_dataset.empty_message")}
+          header={t("views.select_dataset.empty_title")}
+          content={t("views.select_dataset.empty_message")}
           style={{ textAlign: "left" }}
         />
       );

@@ -1,5 +1,13 @@
 {
   "translation": {
+    "app": {
+      "title": "Essen auf Rädern",
+      "short": "EaR"
+    },
+    "button": {
+      "ok": "OK",
+      "cancel": "Abbrechen"
+    },
     "error": {
       "undefined": "Ein Fehler ist aufgetreten.",
       "unexpected_variant": "Ein internes Kommunikationsproblem ist aufgetreten.",
@@ -13,35 +21,31 @@
         "ron": "Ein Dateiformatfehler ist aufgetreten."
       }
     },
-    "app": {
-      "title": "Essen auf Rädern",
-      "short": "EaR",
-      "choose_language": "Sprache auswählen"
-    },
-    "button": {
-      "ok": "OK",
-      "cancel": "Abbrechen"
-    },
-    "select_dataset": {
-      "title": "Datensatz auswählen",
-      "year_label": "Jahr",
-      "year_placeholder": "Jahr auswählen",
-      "month_label": "Monat",
-      "month_placeholder": "Monat auswählen",
-      "month_not_available": "Dieser Monat ist für das gewählte Jahr nicht verfügbar",
-      "new_now": "Neu (dieser Monat)",
-      "new_next": "Neu (nächster Monat)",
-      "load": "Laden",
-      "mismatch": "Das im Datensatz genannte Datum passt nicht zum Dateinamen!",
-      "loading_title": "Suche nach verfügbaren Datensätzen",
-      "loading_message": "Bitte warte einen Augenblick.",
-      "empty_title": "Keine Datensätzen gefunden",
-      "empty_message": "Willst du vielleicht einen neuen erstellen?",
-      "available_tmp_dataset": "Die Datensatzdatei konnte nicht gelesen werden. Eine Wiederherstellungsdatei wurde geladen.",
+    "header": {
+      "choose_language": "Sprache auswählen",
       "close_confirm_header": "Datensatz wirklich schließen?",
       "close_confirm_body": "Alle nicht gespeicherten Daten gehen verloren und können nicht wiederhergestellt werden.",
       "save": "Datensatz speichern",
       "close": "Datensatz schließen"
+    },
+    "views": {
+      "select_dataset": {
+        "title": "Datensatz auswählen",
+        "year_label": "Jahr",
+        "year_placeholder": "Jahr auswählen",
+        "month_label": "Monat",
+        "month_placeholder": "Monat auswählen",
+        "month_not_available": "Dieser Monat ist für das gewählte Jahr nicht verfügbar",
+        "load": "Laden",
+        "new_now": "Neu (dieser Monat)",
+        "new_next": "Neu (nächster Monat)",
+        "mismatch": "Das im Datensatz genannte Datum passt nicht zum Dateinamen!",
+        "loading_title": "Suche nach verfügbaren Datensätzen",
+        "loading_message": "Bitte warte einen Augenblick.",
+        "empty_title": "Keine Datensätzen gefunden",
+        "empty_message": "Willst du vielleicht einen neuen erstellen?",
+        "loaded_backup": "Die Datensatzdatei konnte nicht gelesen werden. Eine Wiederherstellungsdatei wurde geladen."
+      }
     },
     "month": {
       "january": "Januar",
