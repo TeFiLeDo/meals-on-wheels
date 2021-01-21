@@ -2,6 +2,7 @@ import React from "react";
 import { promisified } from "tauri/api/tauri";
 
 import "semantic-ui-css/semantic.min.css";
+import { Container } from "semantic-ui-react";
 
 import SelectDataset from "./views/SelectDataset";
 import { withTranslation } from "react-i18next";
@@ -97,11 +98,14 @@ class App extends React.Component {
       return (
         <Router>
           <SiteHeader closeDataset={this.closeDataset.bind(this)} />
-          <Switch>
-            <Route path="/" exact>
-              Default route
-            </Route>
-          </Switch>
+          <div style={{ height: "5rem" }} />
+          <Container>
+            <Switch>
+              <Route path="/" exact>
+                Default route
+              </Route>
+            </Switch>
+          </Container>
         </Router>
       );
     } else {
