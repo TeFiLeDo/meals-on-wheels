@@ -1,5 +1,6 @@
 import React from "react";
 import { promisified } from "tauri/api/tauri";
+import { setTitle } from "tauri/api/window";
 
 import "semantic-ui-css/semantic.min.css";
 import { Container } from "semantic-ui-react";
@@ -88,6 +89,8 @@ class App extends React.Component {
   }
 
   render() {
+    setTitle(this.props.t("app.title"))
+
     if (this.state.state === "select") {
       return (
         <SelectDataset

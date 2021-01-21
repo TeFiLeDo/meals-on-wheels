@@ -39,7 +39,8 @@
       "exceptionDomain": ""
     },
     "allowlist": {
-      "all": false
+      "all": false,
+      "setTitle": true
     },
     "window": {
       "title": "Meals on Wheels",
