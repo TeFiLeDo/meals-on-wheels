@@ -15,7 +15,8 @@
     },
     "app": {
       "title": "Meals on Wheels",
-      "short": "MoW"
+      "short": "MoW",
+      "choose_language": "Choose language"
     },
     "select_dataset": {
       "title": "Select a dataset",
@@ -34,7 +35,9 @@
       "empty_message": "Maybe you want to create a new one?",
       "available_tmp_dataset": "The dataset file couldn't be read. A backup file was loaded.",
       "close_confirm_header": "Really close the dataset?",
-      "close_confirm_body": "All unsaved data is irreversibly lost."
+      "close_confirm_body": "All unsaved data is irreversibly lost.",
+      "save": "Save Dataset",
+      "close": "Close Dataset"
     },
     "month": {
       "january": "January",

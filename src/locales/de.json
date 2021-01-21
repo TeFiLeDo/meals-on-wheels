@@ -15,7 +15,8 @@
     },
     "app": {
       "title": "Essen auf Rädern",
-      "short": "EaR"
+      "short": "EaR",
+      "choose_language": "Sprache auswählen"
     },
     "select_dataset": {
       "title": "Datensatz auswählen",
@@ -34,7 +35,9 @@
       "empty_message": "Willst du vielleicht einen neuen erstellen?",
       "available_tmp_dataset": "Die Datensatzdatei konnte nicht gelesen werden. Eine Wiederherstellungsdatei wurde geladen.",
       "close_confirm_header": "Datensatz wirklich schließen?",
-      "close_confirm_body": "Alle nicht gespeicherten Daten gehen unwiederherstellbar verloren."
+      "close_confirm_body": "Alle nicht gespeicherten Daten gehen unwiederherstellbar verloren.",
+      "save": "Datensatz speichern",
+      "close": "Datensatz schließen"
     },
     "month": {
       "january": "Januar",
