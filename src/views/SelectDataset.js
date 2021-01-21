@@ -256,7 +256,9 @@ class SelectDataset extends React.Component {
         <Message icon style={{ textAlign: "left" }}>
           <Icon name="circle notched" loading />
           <Message.Content>
-            <Message.Header>{t("views.select_dataset.loading_title")}</Message.Header>
+            <Message.Header>
+              {t("views.select_dataset.loading_title")}
+            </Message.Header>
             {t("views.select_dataset.loading_message")}
           </Message.Content>
         </Message>
