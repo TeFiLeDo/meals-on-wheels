@@ -5,6 +5,7 @@
 
 mod cmd;
 mod data;
+mod flattened;
 
 use data::Data;
 use dotenv::dotenv;

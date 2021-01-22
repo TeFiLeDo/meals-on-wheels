@@ -33,21 +33,29 @@
     },
     "views": {
       "components": {
+        "variants": "Variants",
+        "options": "Options",
         "add": {
           "title": "Add Components",
           "name_label": "Name",
           "name_placeholder": "The new components name",
           "name_warning_title": "Be careful with reusing component names!",
           "name_warning_content": "While this program can easily handle multiple components sharing the same name, it doesn't help you to distinguish between them. It therefore is not recommended to give multiple components the same name.",
-          "variants_label": "Variants",
           "variants_placeholder": "Add a new variant",
           "variants_none": "No other variants found.",
           "variants_new": "New variant: ",
-          "options_label": "Options",
           "options_placeholder": "Add a new option",
           "options_none": "No other options found.",
           "options_new": "New option: ",
           "add": "Add"
+        },
+        "list": {
+          "title": "Component List",
+          "add": "New component",
+          "column_name": "Name",
+          "column_variants": "Number of variants",
+          "column_options": "Number of options",
+          "column_actions": "Actions"
         }
       },
       "select_dataset": {

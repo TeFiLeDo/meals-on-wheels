@@ -1,5 +1,6 @@
 use crate::{
     data::{Component, ComponentOption, ComponentVariant},
+    flattened::component,
     DATA,
 };
 use std::collections::BTreeMap;
@@ -20,12 +21,21 @@ pub enum ComponentCmd {
         variants: Vec<String>,
         options: Vec<String>,
     },
+    /// Gets all components.
+    ///
+    /// # Success variants
+    /// - [`ComponentCmdSuccess::GotComponents`]
+    ///
+    /// # Error variants
+    /// - [`ComponentCmdError::DatasetNotActive`]: if there is no active dataset
+    GetComponents,
 }
 
 #[derive(Debug, serde::Serialize)]
 #[serde(tag = "variant", rename_all = "camelCase")]
 pub enum ComponentCmdSuccess {
     AddedComponent,
+    GotComponents { data: Vec<component::Component> },
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -61,9 +71,16 @@ impl super::CmdAble for ComponentCmd {
                     data.components
                         .insert(Uuid::new_v4(), Component::new(name, v, o));
 
-                    dbg!(data);
-
                     Ok(Self::Success::AddedComponent)
+                } else {
+                    Err(Self::Error::DatasetNotActive)
+                }
+            }
+            Self::GetComponents => {
+                if let Some((data, _)) = &*DATA.read().expect("failed to get data read access") {
+                    Ok(Self::Success::GotComponents {
+                        data: Component::flatten(&data.components),
+                    })
                 } else {
                     Err(Self::Error::DatasetNotActive)
                 }

@@ -33,21 +33,29 @@
     },
     "views": {
       "components": {
+        "variants": "Varianten",
+        "options": "Optionen",
         "add": {
           "title": "Komponenten hinzufügen",
           "name_label": "Name",
           "name_placeholder": "Der Name der neuen Komponente",
           "name_warning_title": "Vorsicht vor Komponenten mit gleichen Namen!",
           "name_warning_content": "Zwar kann dieses Programm problemlos mit mehreren Komponenten, die den gleichen Namen haben, umgehen, jedoch hilft es dir nicht, diese zu unterscheiden. Daher wird davon abgeraten, mehreren Komponenten den gleichen Namen zu geben.",
-          "variants_label": "Varianten",
           "variants_placeholder": "Neue Variante hinzufüge",
           "variants_none": "Keine weiteren Varianten gefunden.",
           "variants_new": "Neue Variante: ",
-          "options_label": "Optionen",
           "options_placeholder": "Neue Option hinzufügen",
           "options_none": "Keine weiteren Optionen gefunden.",
           "options_new": "Neue Option: ",
           "add": "Hinzufügen"
+        },
+        "list": {
+          "title": "Komponentenliste",
+          "add": "Neue Komponente",
+          "column_name": "Name",
+          "column_variants": "Anzahl Varianten",
+          "column_options": "Anzahl Optionen",
+          "column_actions": "Aktionen"
         }
       },
       "select_dataset": {
