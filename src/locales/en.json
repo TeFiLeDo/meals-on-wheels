@@ -25,11 +25,11 @@
       "nav": {
         "components": "Components"
       },
-      "choose_language": "Choose language",
-      "close_confirm_header": "Really close the dataset?",
-      "close_confirm_body": "All unsaved data is irreversibly lost.",
-      "save": "Save Dataset",
-      "close": "Close Dataset"
+      "action_choose_language": "Choose language",
+      "action_save": "Save Dataset",
+      "action_close": "Close Dataset",
+      "action_close_confirm_header": "Really close the dataset?",
+      "action_close_confirm_body": "All unsaved data is irreversibly lost."
     },
     "views": {
       "components": {

@@ -34,7 +34,7 @@ export default function SiteHeader(props) {
         />
 
         <Menu.Menu position="right">
-          <Menu.Item title={t("header.choose_language")}>
+          <Menu.Item title={t("header.action_choose_language")}>
             <Dropdown
               compact
               options={[
@@ -47,7 +47,7 @@ export default function SiteHeader(props) {
           </Menu.Item>
           <Menu.Item
             icon
-            title={t("header.save")}
+            title={t("header.action_save")}
             onClick={() => {
               setSaving("saving");
               promisified({ cmd: "global", sub: { cmd: "save" } })
@@ -66,12 +66,12 @@ export default function SiteHeader(props) {
           </Menu.Item>
           <Menu.Item
             icon="log out"
-            title={t("header.close")}
+            title={t("header.action_close")}
             onClick={() => setShowConfirm(true)}
           />
           <Confirm
-            header={t("header.close_confirm_header")}
-            content={t("header.close_confirm_body")}
+            header={t("header.action_close_confirm_header")}
+            content={t("header.action_close_confirm_body")}
             confirmButton={t("button.ok")}
             cancelButton={t("button.cancel")}
             open={showConfirm}

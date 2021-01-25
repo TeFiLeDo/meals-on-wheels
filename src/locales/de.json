@@ -25,11 +25,11 @@
       "nav": {
         "components": "Komponenten"
       },
-      "choose_language": "Sprache auswählen",
-      "close_confirm_header": "Datensatz wirklich schließen?",
-      "close_confirm_body": "Alle nicht gespeicherten Daten gehen verloren und können nicht wiederhergestellt werden.",
-      "save": "Datensatz speichern",
-      "close": "Datensatz schließen"
+      "action_choose_language": "Sprache auswählen",
+      "action_save": "Datensatz speichern",
+      "action_close": "Datensatz schließen",
+      "action_close_confirm_header": "Datensatz wirklich schließen?",
+      "action_close_confirm_body": "Alle nicht gespeicherten Daten gehen verloren und können nicht wiederhergestellt werden."
     },
     "views": {
       "components": {
