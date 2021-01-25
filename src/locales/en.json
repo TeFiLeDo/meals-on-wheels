@@ -39,6 +39,7 @@
           "title": "Add Components",
           "name_label": "Name",
           "name_placeholder": "The new components name",
+          "name_error_empty": "Name mustn't be empty!",
           "name_warning_title": "Be careful with reusing component names!",
           "name_warning_content": "While this program can easily handle multiple components sharing the same name, it doesn't help you to distinguish between them. It therefore is not recommended to give multiple components the same name.",
           "variants_placeholder": "Add a new variant",

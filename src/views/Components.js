@@ -87,24 +87,27 @@ export default function Components() {
         <Modal.Header content={t("views.components.add.title")} />
         <Modal.Content>
           <Form>
-            <Form.Field>
-              <label>{t("views.components.add.name_label")}</label>
-              <Input
-                placeholder={t("views.components.add.name_placeholder")}
-                value={newComponent.name}
-                onChange={(_, e) => {
-                  setNewComponent((nc) => {
-                    return { ...nc, name: e.value };
-                  });
-                }}
-              />
-              <Message
-                icon="info circle"
-                info
-                header={t("views.components.add.name_warning_title")}
-                content={t("views.components.add.name_warning_content")}
-              />
-            </Form.Field>
+            <Form.Input
+              label={t("views.components.add.name_label")}
+              placeholder={t("views.components.add.name_placeholder")}
+              value={newComponent.name}
+              onChange={(_, e) => {
+                setNewComponent((nc) => {
+                  return { ...nc, name: e.value };
+                });
+              }}
+              error={
+                newComponent.name.trim().length > 0
+                  ? false
+                  : t("views.components.add.name_error_empty")
+              }
+            />
+            <Message
+              icon="info circle"
+              info
+              header={t("views.components.add.name_warning_title")}
+              content={t("views.components.add.name_warning_content")}
+            />
             <Form.Group widths="equal">
               <Form.Field
                 label={t("views.components.variants")}
