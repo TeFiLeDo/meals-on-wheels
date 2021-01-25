@@ -1,3 +1,10 @@
+use crate::{
+    data::{AvailableDatasets, Data},
+    DATA, DATADIR, PROJECT_DIRS,
+};
+use chrono::Datelike;
+use fs2::FileExt;
+use ron::{de::from_reader, ser::to_writer};
 use std::{
     collections::hash_map::DefaultHasher,
     fs::{create_dir_all, File, OpenOptions},
@@ -6,14 +13,6 @@ use std::{
     path::PathBuf,
     sync::Mutex,
 };
-
-use crate::{
-    data::{AvailableDatasets, Data},
-    DATA, DATADIR, PROJECT_DIRS,
-};
-use chrono::Datelike;
-use fs2::FileExt;
-use ron::{de::from_reader, ser::to_writer};
 
 #[derive(Debug, serde::Deserialize)]
 #[serde(tag = "cmd", rename_all = "camelCase")]

@@ -1,6 +1,6 @@
 use crate::{
-    data::{Component, ComponentOption, ComponentVariant},
-    flattened::component,
+    data::component::{Component, Option, Variant},
+    interface::component as interface,
     DATA,
 };
 use std::collections::BTreeMap;
@@ -35,7 +35,7 @@ pub enum ComponentCmd {
 #[serde(tag = "variant", rename_all = "camelCase")]
 pub enum ComponentCmdSuccess {
     AddedComponent,
-    GotComponents { data: Vec<component::Component> },
+    GotComponents { data: Vec<interface::Component> },
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -57,12 +57,12 @@ impl super::CmdAble for ComponentCmd {
             } => {
                 let mut v = BTreeMap::new();
                 for variant in variants {
-                    v.insert(Uuid::new_v4(), ComponentVariant::new(variant));
+                    v.insert(Uuid::new_v4(), Variant::new(variant));
                 }
 
                 let mut o = BTreeMap::new();
                 for option in options {
-                    o.insert(Uuid::new_v4(), ComponentOption::new(option));
+                    o.insert(Uuid::new_v4(), Option::new(option));
                 }
 
                 if let Some((data, _)) =
@@ -79,7 +79,7 @@ impl super::CmdAble for ComponentCmd {
             Self::GetComponents => {
                 if let Some((data, _)) = &*DATA.read().expect("failed to get data read access") {
                     Ok(Self::Success::GotComponents {
-                        data: Component::flatten(&data.components),
+                        data: interface::Component::from(&data.components),
                     })
                 } else {
                     Err(Self::Error::DatasetNotActive)

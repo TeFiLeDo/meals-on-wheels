@@ -1,10 +1,7 @@
 mod available_datasets;
-mod component;
-
-use std::collections::BTreeMap;
-
+pub mod component;
 pub use available_datasets::AvailableDatasets;
-pub use component::*;
+use std::collections::BTreeMap;
 use uuid::Uuid;
 
 /// Struct to hold all application data
@@ -15,7 +12,7 @@ pub struct Data {
     /// The month the data applies to.
     pub month: u32,
     /// The available meal components.
-    pub components: BTreeMap<Uuid, Component>,
+    pub components: BTreeMap<Uuid, component::Component>,
 }
 
 impl Data {
