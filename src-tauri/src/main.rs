@@ -5,7 +5,6 @@
 
 mod cmd;
 mod data;
-mod interface;
 
 use data::Data;
 use dotenv::dotenv;

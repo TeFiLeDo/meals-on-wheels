@@ -1,6 +1,5 @@
 use crate::{
     data::component::{Component, Option, Variant},
-    interface::component as interface,
     DATA,
 };
 use std::collections::BTreeMap;
@@ -36,7 +35,7 @@ pub enum ComponentCmd {
 #[serde(tag = "variant", rename_all = "camelCase")]
 pub enum ComponentCmdSuccess {
     AddedComponent,
-    GotComponents { data: Vec<interface::Component> },
+    GotComponents { data: BTreeMap<Uuid, Component> },
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -87,7 +86,7 @@ impl super::CmdAble for ComponentCmd {
             Self::GetComponents => {
                 if let Some((data, _)) = &*DATA.read().expect("failed to get data read access") {
                     Ok(Self::Success::GotComponents {
-                        data: interface::Component::from(&data.components),
+                        data: data.components.clone(),
                     })
                 } else {
                     Err(Self::Error::DatasetNotActive)

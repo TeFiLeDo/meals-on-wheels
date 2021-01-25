@@ -8,12 +8,11 @@ import {
   Select,
   Button,
   Message,
-  Input,
   Table,
   Modal,
 } from "semantic-ui-react";
 import { promisified } from "tauri/api/tauri";
-import { handle_error, handle_unexpected_variant } from "../error";
+import { handle_unexpected_variant } from "../error";
 
 export default function Components() {
   const { t } = useTranslation();
@@ -71,12 +70,12 @@ export default function Components() {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {components.data.map((e) => {
+          {Object.entries(components.data).map(([_, v]) => {
             return (
               <Table.Row>
-                <Table.Cell>{e.name}</Table.Cell>
-                <Table.Cell>{e.variants.length}</Table.Cell>
-                <Table.Cell>{e.options.length}</Table.Cell>
+                <Table.Cell>{v.name}</Table.Cell>
+                <Table.Cell>{Object.keys(v.variants).length}</Table.Cell>
+                <Table.Cell>{Object.keys(v.options).length}</Table.Cell>
                 <Table.Cell />
               </Table.Row>
             );

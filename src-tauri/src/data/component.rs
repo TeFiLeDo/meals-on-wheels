@@ -2,7 +2,7 @@ use std::collections::BTreeMap;
 use uuid::Uuid;
 
 /// Struct to hold a single component of a menu.
-#[derive(Debug, serde::Deserialize, serde::Serialize)]
+#[derive(Clone, Debug, serde::Deserialize, serde::Serialize)]
 pub struct Component {
     pub name: String,
     pub delete: bool,
@@ -26,7 +26,7 @@ impl Component {
 }
 
 /// Struct to hold a single component variant.
-#[derive(Debug, serde::Deserialize, serde::Serialize)]
+#[derive(Clone, Debug, serde::Deserialize, serde::Serialize)]
 pub struct Variant {
     pub name: String,
     pub delete: bool,
@@ -42,7 +42,7 @@ impl Variant {
 }
 
 /// Struct to hold a single component option.
-#[derive(Debug, serde::Deserialize, serde::Serialize)]
+#[derive(Clone, Debug, serde::Deserialize, serde::Serialize)]
 pub struct Option {
     pub name: String,
     pub delete: bool,
