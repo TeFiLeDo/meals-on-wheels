@@ -25,11 +25,16 @@ export default function Components() {
     optionsAvailable: [],
     error: "",
   });
+  const [available, setAvailable] = useState({ variants: [], options: [] });
   const [components, setComponents] = useState({ loading: true, data: [] });
 
   useEffect(() => {
     update(setComponents, t);
   }, [setComponents, t]);
+
+  useEffect(() => {
+    setAvailable(getAvailableVandO(components.data));
+  }, [components, setAvailable]);
 
   return (
     <React.Fragment>
@@ -70,13 +75,14 @@ export default function Components() {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {Object.entries(components.data).map(([_, v]) => {
+          {Object.entries(components.data).map(([k, v]) => {
             return (
               <Table.Row>
                 <Table.Cell>{v.name}</Table.Cell>
                 <Table.Cell>{Object.keys(v.variants).length}</Table.Cell>
                 <Table.Cell>{Object.keys(v.options).length}</Table.Cell>
-                <Table.Cell />
+                <Table.Cell>
+                </Table.Cell>
               </Table.Row>
             );
           })}
@@ -121,16 +127,13 @@ export default function Components() {
                 noResultsMessage={t("views.components.add.variants_none")}
                 additionLabel={t("views.components.add.variants_new")}
                 control={Select}
-                options={newComponent.variantsAvailable}
+                options={available.variants}
                 value={newComponent.variants}
                 onAddItem={(_, { value }) =>
-                  setNewComponent((nc) => {
+                  setAvailable((a) => {
                     return {
-                      ...nc,
-                      variantsAvailable: [
-                        { text: value, value },
-                        ...nc.variantsAvailable,
-                      ],
+                      ...a,
+                      variants: [...a.variants, { text: value, value }],
                     };
                   })
                 }
@@ -150,16 +153,13 @@ export default function Components() {
                 noResultsMessage={t("views.components.add.options_none")}
                 additionLabel={t("views.components.add.options_new")}
                 control={Select}
-                options={newComponent.optionsAvailable}
+                options={available.options}
                 value={newComponent.options}
                 onAddItem={(_, { value }) =>
-                  setNewComponent((nc) => {
+                  setAvailable((a) => {
                     return {
-                      ...nc,
-                      optionsAvailable: [
-                        { text: value, value },
-                        ...nc.optionsAvailable,
-                      ],
+                      ...a,
+                      options: [...a.options, { text: value, value }],
                     };
                   })
                 }
@@ -260,4 +260,28 @@ function update(setComponents, t) {
         return { ...c, loading: false, data: [] };
       });
     });
+}
+
+function getAvailableVandO(data) {
+  let variants = [];
+  let options = [];
+
+  for (var d in data) {
+    for (var v in data[d].variants) {
+      let variant = data[d].variants[v].name;
+
+      if (!variants.includes(variant)) {
+        variants.push({ text: variant, value: variant });
+      }
+    }
+    for (var o in data[d].options) {
+      let option = data[d].options[o].name;
+
+      if (!options.includes(option)) {
+        options.push({ text: option, value: option });
+      }
+    }
+  }
+
+  return { variants, options };
 }
