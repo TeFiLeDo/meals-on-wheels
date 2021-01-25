@@ -9,6 +9,7 @@
       "cancel": "Abbrechen"
     },
     "error": {
+      "occurred": "Ein Fehler ist aufgetreten.",
       "undefined": "Ein Fehler ist aufgetreten.",
       "unexpected_variant": "Ein internes Kommunikationsproblem ist aufgetreten.",
       "global": {
@@ -19,6 +20,9 @@
         "lock": "Datensatzdateien konnten nicht gesperrt werden.",
         "no_dataset": "Der Datensatz existiert nicht.",
         "ron": "Ein Dateiformatfehler ist aufgetreten."
+      },
+      "components": {
+        "name_empty": "Das Feld \"Name\" darf nicht leer sein."
       }
     },
     "header": {

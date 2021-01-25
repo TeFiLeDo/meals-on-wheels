@@ -24,6 +24,7 @@ export default function Components() {
     variantsAvailable: [],
     options: [],
     optionsAvailable: [],
+    error: "",
   });
   const [components, setComponents] = useState({ loading: true, data: [] });
 
@@ -86,7 +87,13 @@ export default function Components() {
       <Modal open={newComponent.open}>
         <Modal.Header content={t("views.components.add.title")} />
         <Modal.Content>
-          <Form>
+          <Form error={newComponent.error.length > 0}>
+            <Message
+              error
+              icon="exclamation triangle"
+              header={t("error.occurred")}
+              content={t(newComponent.error)}
+            />
             <Form.Input
               label={t("views.components.add.name_label")}
               placeholder={t("views.components.add.name_placeholder")}
@@ -184,6 +191,7 @@ export default function Components() {
                   open: false,
                   variants: [],
                   options: [],
+                  error: "",
                 };
               })
             }
@@ -218,11 +226,19 @@ export default function Components() {
                         open: false,
                         variants: [],
                         options: [],
+                        error: "",
                       };
                     });
                   }
                 })
-                .catch((e) => handle_error(e, t));
+                .catch((e) =>
+                  setNewComponent((nc) => {
+                    return {
+                      ...nc,
+                      error: e,
+                    };
+                  })
+                );
             }}
           />
         </Modal.Actions>

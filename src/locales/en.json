@@ -9,6 +9,7 @@
       "cancel": "Cancel"
     },
     "error": {
+      "occurred": "An error occurred.",
       "undefined": "An error occurred.",
       "unexpected_variant": "The backend sent an invalid response.",
       "global": {
@@ -19,6 +20,9 @@
         "lock": "Filed to lock the dataset files.",
         "no_dataset": "This dataset doesn't exist.",
         "ron": "A file format error occurred."
+      },
+      "components": {
+        "name_empty": "The field \"name\" mustn't be empty."
       }
     },
     "header": {

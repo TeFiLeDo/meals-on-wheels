@@ -16,6 +16,7 @@ pub enum ComponentCmd {
     ///
     /// # Error variants
     /// - [`ComponentCmdError::DatasetNotActive`]: if there is no active dataset
+    /// - [`ComponentCmdError::EmptyName`]: if the specified name is empty
     AddComponent {
         name: String,
         variants: Vec<String>,
@@ -42,6 +43,8 @@ pub enum ComponentCmdSuccess {
 pub enum ComponentCmdError {
     #[error("error.global.dataset_not_active")]
     DatasetNotActive,
+    #[error("error.components.name_empty")]
+    EmptyName,
 }
 
 impl super::CmdAble for ComponentCmd {
@@ -55,6 +58,11 @@ impl super::CmdAble for ComponentCmd {
                 variants,
                 options,
             } => {
+                let name = name.trim();
+                if name.is_empty() {
+                    return Err(Self::Error::EmptyName);
+                }
+
                 let mut v = BTreeMap::new();
                 for variant in variants {
                     v.insert(Uuid::new_v4(), Variant::new(variant));
@@ -69,7 +77,7 @@ impl super::CmdAble for ComponentCmd {
                     &mut *DATA.write().expect("failed to get data write access")
                 {
                     data.components
-                        .insert(Uuid::new_v4(), Component::new(name, v, o));
+                        .insert(Uuid::new_v4(), Component::new(name.to_string(), v, o));
 
                     Ok(Self::Success::AddedComponent)
                 } else {
