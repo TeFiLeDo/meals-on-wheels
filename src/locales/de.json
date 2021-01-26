@@ -46,7 +46,7 @@
           "name_error_empty": "Der Name darf nicht leer sein!",
           "name_warning_title": "Vorsicht vor Komponenten mit gleichen Namen!",
           "name_warning_content": "Zwar kann dieses Programm problemlos mit mehreren Komponenten, die den gleichen Namen haben, umgehen, jedoch hilft es dir nicht, diese zu unterscheiden. Daher wird davon abgeraten, mehreren Komponenten den gleichen Namen zu geben.",
-          "variants_placeholder": "Neue Variante hinzufüge",
+          "variants_placeholder": "Neue Variante hinzufügen",
           "variants_none": "Keine weiteren Varianten gefunden.",
           "variants_new": "Neue Variante: ",
           "options_placeholder": "Neue Option hinzufügen",
