@@ -10,7 +10,7 @@
     },
     "error": {
       "occurred": "An error occurred.",
-      "undefined": "An error occurred.",
+      "undefined": "An unknown error occurred.",
       "unexpected_variant": "The backend sent an invalid response.",
       "global": {
         "dataset_exists": "This dataset already exists.",

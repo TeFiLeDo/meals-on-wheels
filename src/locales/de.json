@@ -10,7 +10,7 @@
     },
     "error": {
       "occurred": "Ein Fehler ist aufgetreten.",
-      "undefined": "Ein Fehler ist aufgetreten.",
+      "undefined": "Ein unerwarteter Fehler ist aufgetreten.",
       "unexpected_variant": "Ein internes Kommunikationsproblem ist aufgetreten.",
       "global": {
         "dataset_exists": "Der Datensatz existiert bereits.",
