@@ -1,4 +1,6 @@
 export function handle_error(error, t) {
+  console.error(error);
+
   let components = error.split(":");
 
   let error_string;
