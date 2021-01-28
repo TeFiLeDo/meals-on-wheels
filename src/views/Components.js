@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Header, Icon, Segment, Button, Table } from "semantic-ui-react";
 import { promisified } from "tauri/api/tauri";
+import EditModal from "../components/components/EditModal";
 import NewModal from "../components/components/NewModal";
 import { handle_unexpected_variant } from "../error";
 
 export default function Components() {
   const { t } = useTranslation();
   const [newDialog, setNewDialog] = useState(false);
+  const [editor, setEditor] = useState({ open: false, uuid: null });
   const [components, setComponents] = useState({ loading: true, data: [] });
 
   useEffect(() => {
@@ -55,7 +57,21 @@ export default function Components() {
                 <Table.Cell>{v.name}</Table.Cell>
                 <Table.Cell>{Object.keys(v.variants).length}</Table.Cell>
                 <Table.Cell>{Object.keys(v.options).length}</Table.Cell>
-                <Table.Cell></Table.Cell>
+                <Table.Cell>
+                  <Button
+                    icon="pencil"
+                    title={t("views.components.edit.tooltip")}
+                    onClick={() => {
+                      setEditor((e) => {
+                        return {
+                          ...e,
+                          open: true,
+                          uuid: k,
+                        };
+                      });
+                    }}
+                  />
+                </Table.Cell>
               </Table.Row>
             );
           })}
@@ -71,6 +87,20 @@ export default function Components() {
           setNewDialog(false);
         }}
       />
+
+      {editor.uuid !== null ? (
+        <EditModal
+          open={editor.open}
+          uuid={editor.uuid}
+          data={components.data[editor.uuid]}
+          onClose={() =>
+            setEditor((e) => {
+              return { ...e, open: false, uuid: null };
+            })
+          }
+          onEdit={() => update(setComponents, t)}
+        />
+      ) : null}
     </React.Fragment>
   );
 }

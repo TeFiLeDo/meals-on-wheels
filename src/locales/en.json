@@ -54,6 +54,21 @@
           "options_new": "New option: ",
           "add": "Add"
         },
+        "edit": {
+          "title": "Edit {{name}}",
+          "options": "Options",
+          "options_add": "Add an option…",
+          "options_add_action": "Add",
+          "options_title": "Edit options of {{name}}",
+          "variants": "Variants",
+          "variants_add": "Add a variant…",
+          "variants_add_action": "Add",
+          "variants_title": "Edit variants of {{name}}",
+          "actions": "Actions",
+          "action_delete": "Delete",
+          "action_restore": "Restore",
+          "deleted": "Deleted"
+        },
         "list": {
           "title": "Component List",
           "add": "New component",

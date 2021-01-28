@@ -54,6 +54,21 @@
           "options_new": "Neue Option: ",
           "add": "Hinzufügen"
         },
+        "edit": {
+          "title": "{{name}} bearbeiten",
+          "options": "Optionen",
+          "options_add": "Option hinzufügen…",
+          "options_add_action": "Hinzufügen",
+          "options_title": "Optionen von {{name}} bearbeiten",
+          "variants": "Varianten",
+          "variants_add": "Variante hinzufügen…",
+          "variants_add_action": "Hinzufügen",
+          "variants_title": "Varianten von {{name}} bearbeiten",
+          "actions": "Aktionen",
+          "action_delete": "Löschen",
+          "action_restore": "Wiederherstellen",
+          "deleted": "Gelöscht"
+        },
         "list": {
           "title": "Komponentenliste",
           "add": "Neue Komponente",
