@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Header, Icon, Segment, Button, Table } from "semantic-ui-react";
 import { promisified } from "tauri/api/tauri";
-import EditModal from "../components/components/EditModal";
-import NewModal from "../components/components/NewModal";
+import EditComponent from "../components/components/Edit";
+import NewComponent from "../components/components/New";
 import { handle_unexpected_variant } from "../error";
 
 export default function Components() {
@@ -78,7 +78,7 @@ export default function Components() {
         </Table.Body>
       </Table>
 
-      <NewModal
+      <NewComponent
         open={newDialog}
         onAdded={() => {
           update(setComponents, t);
@@ -89,7 +89,7 @@ export default function Components() {
       />
 
       {editor.uuid !== null ? (
-        <EditModal
+        <EditComponent
           open={editor.open}
           uuid={editor.uuid}
           data={components.data[editor.uuid]}

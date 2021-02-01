@@ -11,7 +11,7 @@ import {
 import { promisified } from "tauri/api/tauri";
 import { handle_unexpected_variant } from "../../error";
 
-export default function NewModal(props) {
+export default function New(props) {
   const { t } = useTranslation();
   const [newComponent, setNewComponent] = useState({
     name: "",

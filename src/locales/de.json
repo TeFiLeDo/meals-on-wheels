@@ -8,6 +8,16 @@
       "ok": "OK",
       "cancel": "Abbrechen"
     },
+    "components": {
+      "list_editor": {
+        "title": "Liste bearbeiten",
+        "items_title": "Einträge",
+        "actions": "Aktionen",
+        "add_placeholder": "Eintrag hinzufügen",
+        "add_action": "hinzufügen",
+        "no_items": "Keine Einträge gefunden"
+      }
+    },
     "error": {
       "occurred": "Ein Fehler ist aufgetreten.",
       "undefined": "Ein unerwarteter Fehler ist aufgetreten.",
@@ -59,10 +69,12 @@
           "options": "Optionen",
           "options_add": "Option hinzufügen…",
           "options_add_action": "Hinzufügen",
+          "options_none": "Keine Optionen gefunden",
           "options_title": "{{name}}-Optionen bearbeiten",
           "variants": "Varianten",
           "variants_add": "Variante hinzufügen…",
           "variants_add_action": "Hinzufügen",
+          "variants_none": "Keine Varianten gefunden",
           "variants_title": "{{name}}-Varianten bearbeiten",
           "actions": "Aktionen"
         },

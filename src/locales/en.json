@@ -8,6 +8,16 @@
       "ok": "OK",
       "cancel": "Cancel"
     },
+    "components": {
+      "list_editor": {
+        "title": "Edit list",
+        "items_title": "Items",
+        "actions": "Actions",
+        "add_placeholder": "Add new item",
+        "add_action": "Add",
+        "no_items": "No items found"
+      }
+    },
     "error": {
       "occurred": "An error occurred.",
       "undefined": "An unknown error occurred.",
@@ -59,10 +69,12 @@
           "options": "Options",
           "options_add": "Add an option…",
           "options_add_action": "Add",
+          "options_none": "No options found",
           "options_title": "Edit options of {{name}}",
           "variants": "Variants",
           "variants_add": "Add a variant…",
           "variants_add_action": "Add",
+          "variants_none": "No variants found",
           "variants_title": "Edit variants of {{name}}",
           "actions": "Actions"
         },
