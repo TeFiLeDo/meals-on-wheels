@@ -64,10 +64,7 @@
           "variants_add": "Add a variant…",
           "variants_add_action": "Add",
           "variants_title": "Edit variants of {{name}}",
-          "actions": "Actions",
-          "action_delete": "Delete",
-          "action_restore": "Restore",
-          "deleted": "Deleted"
+          "actions": "Actions"
         },
         "list": {
           "title": "Component List",

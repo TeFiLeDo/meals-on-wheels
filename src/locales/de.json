@@ -64,10 +64,7 @@
           "variants_add": "Variante hinzufügen…",
           "variants_add_action": "Hinzufügen",
           "variants_title": "Varianten von {{name}} bearbeiten",
-          "actions": "Aktionen",
-          "action_delete": "Löschen",
-          "action_restore": "Wiederherstellen",
-          "deleted": "Gelöscht"
+          "actions": "Aktionen"
         },
         "list": {
           "title": "Komponentenliste",

@@ -79,60 +79,8 @@ export default function EditModal(props) {
             {Object.entries(props.data.variants).map(([k, v]) => {
               return (
                 <Table.Row>
-                  <Table.Cell>
-                    {v.name}{" "}
-                    {v.delete ? (
-                      <Label
-                        icon="trash"
-                        content={t("views.components.edit.deleted")}
-                        color="red"
-                      />
-                    ) : null}
-                  </Table.Cell>
-                  <Table.Cell collapsing>
-                    {v.delete ? (
-                      <Button
-                        icon="undo"
-                        title={t("views.components.edit.action_restore")}
-                        primary
-                        compact
-                        floated="right"
-                        onClick={() => alert("not implemented yet")}
-                      />
-                    ) : (
-                      <Button
-                        icon="trash"
-                        title={t("views.components.edit.action_delete")}
-                        negative
-                        compact
-                        floated="right"
-                        onClick={() =>
-                          promisified({
-                            cmd: "component",
-                            sub: {
-                              cmd: "removeVariant",
-                              component: props.uuid,
-                              variant: k,
-                            },
-                          })
-                            .then((r) => {
-                              if (
-                                handle_unexpected_variant(
-                                  "removedVariant",
-                                  r.variant,
-                                  t
-                                )
-                              ) {
-                                props.onEdit();
-                              }
-                            })
-                            .catch((e) => {
-                              handle_error(e, t);
-                            })
-                        }
-                      />
-                    )}
-                  </Table.Cell>
+                  <Table.Cell>{v.name}</Table.Cell>
+                  <Table.Cell collapsing></Table.Cell>
                 </Table.Row>
               );
             })}
@@ -200,50 +148,7 @@ export default function EditModal(props) {
                       />
                     ) : null}
                   </Table.Cell>
-                  <Table.Cell collapsing>
-                    {v.delete ? (
-                      <Button
-                        icon="undo"
-                        title={t("views.components.edit.action_restore")}
-                        primary
-                        compact
-                        floated="right"
-                        onClick={() => alert("not implemented yet")}
-                      />
-                    ) : (
-                      <Button
-                        icon="trash"
-                        title={t("views.components.edit.action_delete")}
-                        negative
-                        compact
-                        floated="right"
-                        onClick={() =>
-                          promisified({
-                            cmd: "component",
-                            sub: {
-                              cmd: "removeOption",
-                              component: props.uuid,
-                              option: k,
-                            },
-                          })
-                            .then((r) => {
-                              if (
-                                handle_unexpected_variant(
-                                  "removedOption",
-                                  r.variant,
-                                  t
-                                )
-                              ) {
-                                props.onEdit();
-                              }
-                            })
-                            .catch((e) => {
-                              handle_error(e, t);
-                            })
-                        }
-                      />
-                    )}
-                  </Table.Cell>
+                  <Table.Cell collapsing></Table.Cell>
                 </Table.Row>
               );
             })}
