@@ -1,5 +1,5 @@
 use crate::{data::meal::Meal, DATA};
-use std::collections::BTreeMap;
+use std::{collections::BTreeMap, todo};
 use uuid::Uuid;
 
 #[derive(Debug, serde::Deserialize)]
@@ -20,12 +20,21 @@ pub enum MealCmd {
         short: String,
         components: BTreeMap<Uuid, Option<Uuid>>,
     },
+    /// Returns a list of all meals.
+    ///
+    /// # Success variants
+    /// - [`MealCmdSuccess::GotMeals`]
+    ///
+    /// # Error variants
+    /// - [`MealCmdError::DatasetNotActive`]: if there is no active dataset
+    GetMeals,
 }
 
 #[derive(Debug, serde::Serialize)]
 #[serde(tag = "variant", rename_all = "camelCase")]
 pub enum MealCmdSuccess {
     AddedMeal,
+    GotMeals { data: BTreeMap<Uuid, Meal> },
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -86,6 +95,15 @@ impl super::CmdAble for MealCmd {
                     dbg!(data);
 
                     Ok(Self::Success::AddedMeal)
+                } else {
+                    Err(Self::Error::DatasetNotActive)
+                }
+            }
+            Self::GetMeals => {
+                if let Some((data, _)) = &*DATA.read().expect("failed to get data read access") {
+                    Ok(Self::Success::GotMeals {
+                        data: data.meals.clone(),
+                    })
                 } else {
                     Err(Self::Error::DatasetNotActive)
                 }

@@ -8,20 +8,19 @@ import { handle_unexpected_variant, handle_error } from "../error";
 export default function Meals() {
   const { t } = useTranslation();
   const [add, setAdd] = useState(false);
+  const [meals, setMeals] = useState({});
   const [components, setComponents] = useState({});
 
-  useEffect(
-    () =>
-      promisified({ cmd: "component", sub: { cmd: "getComponents" } })
-        .then((r) => {
-          console.log(r);
-          if (handle_unexpected_variant("gotComponents", r.variant, t)) {
-            setComponents(r.data);
-          }
-        })
-        .catch((e) => handle_error(e, t)),
-    [setComponents, t]
-  );
+  useEffect(() => {
+    update(setMeals, t);
+    promisified({ cmd: "component", sub: { cmd: "getComponents" } })
+      .then((r) => {
+        if (handle_unexpected_variant("gotComponents", r.variant, t)) {
+          setComponents(r.data);
+        }
+      })
+      .catch((e) => handle_error(e, t));
+  }, [setComponents, setMeals, t]);
 
   return (
     <>
@@ -45,21 +44,53 @@ export default function Meals() {
           <Table.Row>
             <Table.HeaderCell content={t("views.meals.list.column_name")} />
             <Table.HeaderCell content={t("views.meals.list.column_short")} />
-            <Table.HeaderCell content={t("views.meals.list.column_actions")} />
+            <Table.HeaderCell
+              collapsing
+              content={t("views.meals.list.column_actions")}
+            />
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          <Table.Row>
-            <Table.Cell
-              colSpan={3}
-              content={t("views.meals.list.empty")}
-              textAlign="center"
-            />
-          </Table.Row>
+          {Object.keys(meals).length > 0 ? (
+            Object.entries(meals).map(([k, v]) => renderRow(k, v))
+          ) : (
+            <Table.Row>
+              <Table.Cell
+                colSpan={3}
+                content={t("views.meals.list.empty")}
+                textAlign="center"
+              />
+            </Table.Row>
+          )}
         </Table.Body>
       </Table>
 
-      <New open={add} onClose={() => setAdd(false)} components={components} />
+      <New
+        open={add}
+        onClose={() => setAdd(false)}
+        onAdded={() => update(setMeals, t)}
+        components={components}
+      />
     </>
   );
+}
+
+function renderRow(uuid, meal) {
+  return (
+    <Table.Row key={uuid}>
+      <Table.Cell content={meal.name} />
+      <Table.Cell content={meal.short} />
+      <Table.Cell content={<i>Coming soon</i>} textAlign="center" />
+    </Table.Row>
+  );
+}
+
+function update(setMeals, t) {
+  promisified({ cmd: "meal", sub: { cmd: "getMeals" } })
+    .then((r) => {
+      if (handle_unexpected_variant("gotMeals", r.variant, t)) {
+        setMeals(r.data);
+      }
+    })
+    .catch((e) => handle_error(e, t));
 }
