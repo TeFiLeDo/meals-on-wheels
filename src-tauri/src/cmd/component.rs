@@ -55,9 +55,7 @@ pub enum ComponentCmdSuccess {
     AddedComponent,
     AddedOption,
     AddedVariant,
-    GotComponents {
-        data: BTreeMap<Uuid, Component>,
-    },
+    GotComponents { data: BTreeMap<Uuid, Component> },
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -109,6 +107,9 @@ impl super::CmdAble for ComponentCmd {
             }
             Self::AddOption { component, name } => {
                 let name = name.trim();
+                if name.is_empty() {
+                    return Err(Self::Error::EmptyName);
+                }
 
                 if let Some((data, _)) =
                     &mut *DATA.write().expect("failed to get data write access")
@@ -134,6 +135,9 @@ impl super::CmdAble for ComponentCmd {
             }
             Self::AddVariant { component, name } => {
                 let name = name.trim();
+                if name.is_empty() {
+                    return Err(Self::Error::EmptyName);
+                }
 
                 if let Some((data, _)) =
                     &mut *DATA.write().expect("failed to get data write access")
