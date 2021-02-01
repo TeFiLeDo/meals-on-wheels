@@ -5,8 +5,8 @@
       "short": "MoW"
     },
     "button": {
-      "ok": "OK",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "ok": "OK"
     },
     "components": {
       "list_editor": {
@@ -33,11 +33,16 @@
       },
       "components": {
         "name_empty": "The field \"name\" mustn't be empty."
+      },
+      "meals": {
+        "name_empty": "The field \"name\" mustn't be empty.",
+        "short_empty": "The field \"short\" mustn't be empty."
       }
     },
     "header": {
       "nav": {
-        "components": "Components"
+        "components": "Components",
+        "meals": "Meals"
       },
       "action_choose_language": "Choose language",
       "action_save": "Save Dataset",
@@ -84,6 +89,34 @@
           "column_name": "Name",
           "column_variants": "Number of variants",
           "column_options": "Number of options",
+          "column_actions": "Actions"
+        }
+      },
+      "meals": {
+        "add": {
+          "title": "Add Meals",
+          "add": "Add",
+          "name_label": "Name",
+          "name_placeholder": "The new meals name",
+          "name_empty": "Name mustn't be empty",
+          "short_label": "Shortcode",
+          "short_placeholder": "The new meals shortcode",
+          "short_empty": "Shortcode mustn't be empty",
+          "components": {
+            "title": "Components",
+            "column_component": "Component",
+            "column_variant": "Variant",
+            "component": "Select a component",
+            "variant": "Select a variant",
+            "default_variant": "Default"
+          }
+        },
+        "list": {
+          "title": "Meal List",
+          "add": "Create meal",
+          "empty": "There are no existing meals.",
+          "column_name": "Name",
+          "column_short": "Shortcode",
           "column_actions": "Actions"
         }
       },

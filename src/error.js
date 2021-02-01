@@ -5,7 +5,7 @@ export function handle_error(error, t) {
 
   let error_string;
   if (components.length < 1) {
-    error_string = "error.undefined";
+    error_string = error;
   } else {
     error_string = components[0];
   }

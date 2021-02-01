@@ -1,5 +1,7 @@
 mod available_datasets;
 pub mod component;
+pub mod meal;
+
 pub use available_datasets::AvailableDatasets;
 use std::collections::BTreeMap;
 use uuid::Uuid;
@@ -13,6 +15,8 @@ pub struct Data {
     pub month: u32,
     /// The available meal components.
     pub components: BTreeMap<Uuid, component::Component>,
+    /// The available meals.
+    pub meals: BTreeMap<Uuid, meal::Meal>,
 }
 
 impl Data {
@@ -21,6 +25,7 @@ impl Data {
             year,
             month,
             components: BTreeMap::new(),
+            meals: BTreeMap::new(),
         }
     }
 }

@@ -5,8 +5,8 @@
       "short": "EaR"
     },
     "button": {
-      "ok": "OK",
-      "cancel": "Abbrechen"
+      "cancel": "Abbrechen",
+      "ok": "OK"
     },
     "components": {
       "list_editor": {
@@ -33,11 +33,16 @@
       },
       "components": {
         "name_empty": "Das Feld \"Name\" darf nicht leer sein."
+      },
+      "meals": {
+        "name_empty": "Das Feld \"Name\" darf nicht leer sein.",
+        "short_empty": "Das Feld \"Kürzel\" darf nicht leer sein."
       }
     },
     "header": {
       "nav": {
-        "components": "Komponenten"
+        "components": "Komponenten",
+        "meals": "Menüs"
       },
       "action_choose_language": "Sprache auswählen",
       "action_save": "Datensatz speichern",
@@ -84,6 +89,34 @@
           "column_name": "Name",
           "column_variants": "Anzahl Varianten",
           "column_options": "Anzahl Optionen",
+          "column_actions": "Aktionen"
+        }
+      },
+      "meals": {
+        "add": {
+          "title": "Menü hinzufügen",
+          "add": "Hinzufügen",
+          "name_label": "Name",
+          "name_placeholder": "Der Name des neuen Menüs",
+          "name_empty": "Name darf nicht leer sein",
+          "short_label": "Kürzel",
+          "short_placeholder": "Das Kürzel des neuen Menüs",
+          "short_empty": "Kürzel darf nicht leer sein",
+          "components": {
+            "title": "Komponenten",
+            "column_component": "Komponente",
+            "column_variant": "Variante",
+            "component": "Komponente auswählen",
+            "variant": "Variante auswählen",
+            "default_variant": "Standard"
+          }
+        },
+        "list": {
+          "title": "Menüliste",
+          "add": "Neues Menü",
+          "empty": "Es gibt noch keine Menüs.",
+          "column_name": "Name",
+          "column_short": "Kürzel",
           "column_actions": "Aktionen"
         }
       },

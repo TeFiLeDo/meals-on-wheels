@@ -1,5 +1,6 @@
 pub mod component;
 pub mod global;
+pub mod meal;
 
 use tauri::execute_promise;
 
@@ -13,6 +14,11 @@ pub enum Cmd {
     },
     Global {
         sub: global::GlobalCmd,
+        callback: String,
+        error: String,
+    },
+    Meal {
+        sub: meal::MealCmd,
         callback: String,
         error: String,
     },
@@ -32,6 +38,16 @@ impl Cmd {
                 error_callback,
             ),
             Self::Global {
+                sub,
+                callback: success_callback,
+                error: error_callback,
+            } => execute_promise(
+                webview,
+                || sub.execute().map_err(|e| e.into()),
+                success_callback,
+                error_callback,
+            ),
+            Self::Meal {
                 sub,
                 callback: success_callback,
                 error: error_callback,

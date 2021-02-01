@@ -11,6 +11,7 @@ import { handle_error, handle_unexpected_variant } from "./error";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import SiteHeader from "./components/SiteHeader";
 import Components from "./views/Components";
+import Meals from "./views/Meals";
 
 class App extends React.Component {
   state = {
@@ -89,7 +90,7 @@ class App extends React.Component {
   }
 
   render() {
-    setTitle(this.props.t("app.title"))
+    setTitle(this.props.t("app.title"));
 
     if (this.state.state === "select") {
       return (
@@ -110,6 +111,9 @@ class App extends React.Component {
               </Route>
               <Route path="/components">
                 <Components />
+              </Route>
+              <Route path="/meals">
+                <Meals />
               </Route>
             </Switch>
           </Container>

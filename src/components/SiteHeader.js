@@ -27,6 +27,7 @@ export default function SiteHeader(props) {
         <Menu.Item header as={Link} to="/" title={t("app.title")}>
           {t(["app.short", "app.title"])}
         </Menu.Item>
+        <Menu.Item as={Link} to="/meals" content={t("header.nav.meals")} />
         <Menu.Item
           as={Link}
           to="/components"
