@@ -59,11 +59,11 @@
           "options": "Optionen",
           "options_add": "Option hinzufügen…",
           "options_add_action": "Hinzufügen",
-          "options_title": "Optionen von {{name}} bearbeiten",
+          "options_title": "{{name}}-Optionen bearbeiten",
           "variants": "Varianten",
           "variants_add": "Variante hinzufügen…",
           "variants_add_action": "Hinzufügen",
-          "variants_title": "Varianten von {{name}} bearbeiten",
+          "variants_title": "{{name}}-Varianten bearbeiten",
           "actions": "Aktionen"
         },
         "list": {
